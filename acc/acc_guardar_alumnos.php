@@ -36,7 +36,7 @@
 
             include "../conexion.php";
 
-            $sql_act = "UPDATE alumnos SET nota_$columna=".$nota." 
+            $sql_act = "UPDATE alumnos SET nota_$columna=".$nota.", columna=".$columna." 
                                         WHERE numero=".$fila;
             $res_act = mysqli_query($link, $sql_act);
 
@@ -48,7 +48,7 @@
 
             if($res_trae){
 
-                header("location:../frm/frm_notas.php?INFORMACION=ISSET_ALUMNO&curso=$curso&numero=$fila");
+                header("location:../frm/frm_notas.php?INFORMACION=ISSET_ALUMNO&curso=$curso&numero=$fila&columna=$columna");
    
            }else{
    

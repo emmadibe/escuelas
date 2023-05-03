@@ -181,22 +181,10 @@
 
                             <?php
     
-                                    if(isset($_GET["numero"])){//Me traigo la variable numero porque es más identificatorio que el nombre del alumno. El número no se va a repetir.
+                                    if(isset($_GET["columna"])){
 
-                                        $numero = $_GET["numero"];
-
-                                        $sql_numero = "SELECT * FROM alumnos WHERE curso ='".$curso."'";
-                                        //Me traigo todos los campos de la tabla alumnos en donde el campo curso sea igual a la variable curso. Eso es para traerme los datos de los alumnos del curso que me interesa. 
-                                        $res_numero = mysqli_query($link, $sql_numero);
-                                        $mostrar_numero = mysqli_fetch_array($res_numero);
-                                        
-
-                                        while ($fila = mysqli_fetch_array($res_numero)){
-                                        if ($fila["numero"] == $i + 1){ //Lo hago para que coincida con el id de la celda. Así, solo se pondrá el nombre en la celda cuyo id coincide con el numero del alumno. 
-                                        echo '<h4 style="color:red">'.ucfirst($fila["nombre"]).'</h4>';
+                                    
                                         }
-                                        }
-                                //Gracias a este while y estos if, en cada celda me pondrá el nombre del alumno cuyo campo numero es igual al id de la celda (variable i + 2). Si no hiciera esto, aparecerían los nombres en todas las celdas. 
                                     
                                     }
 
