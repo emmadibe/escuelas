@@ -115,7 +115,9 @@
 
                 <tr id="<?php echo ($i +1) ?>">
                         
-                        <td scope="col" style="background: yellow" id="<?php echo ($i + 1) ?>"> 
+                        <?php $r = $i + 1; ?>
+
+                        <td scope="col" style="background: yellow" id="<?php echo ($r) ?>"> 
 
                             <?php echo $f = $i + 1 ?>
 
@@ -167,8 +169,7 @@
                         ?>
 
                         <td scope="col" style="background: pink" id="<?php echo $desde + 1 ?>">
-                        
-                            
+                    
                             <form method="POST" action="../acc/acc_guardar_alumnos.php?curso=<?php echo $curso ?>&fila=<?php echo ($i + 1) ?>&columna=<?php echo $desde + 1 ?>">
 
                                 <label for="nota"></label>
@@ -182,14 +183,28 @@
                             <?php
     
                                     if(isset($_GET["columna"])){
+                                            
+                                        $columna = $_GET["columna"];
+                                        $curso = $_GET["curso"];
+                                        
+                                        $sql_columna = "SELECT * FROM alumnos WHERE curso = '".$curso."'";
+                                        $res_columna = mysqli_query($link, $sql_columna);
+                                        $mostrar_columna = mysqli_fetch_array($res_columna);
 
-                                    
+                                        $columna_real = $mostrar_columna["columna"];
+
+                                        while ($fila_columna = mysqli_fetch_array($res_columna)){
+
+                                            if($fila_columna["columna"] == $desde + 1 AND $fila_columna["numero"] == $i + 1){
+
+                                                echo $fila_columna["nota_".$fila_columna["columna"].""];
+
+                                            }
+
                                         }
                                     
-                                    }
-
-                                
-
+                                     }
+                                    
                             ?>
                     
                         </td>

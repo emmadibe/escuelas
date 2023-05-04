@@ -32,6 +32,7 @@
 
             $fila = $_GET["fila"];
             $columna = $_GET["columna"];
+            $curso = $_GET["curso"];
             $nota=$_POST["nota"];
 
             include "../conexion.php";
@@ -43,8 +44,6 @@
             $sql_trae = "SELECT * FROM alumnos WHERE numero = ".$fila;
             $res_trae = mysqli_query($link, $sql_trae);
             $mostrar_trae = mysqli_fetch_array($res_trae);
-
-            $curso = $mostrar_trae["curso"];
 
             if($res_trae){
 
