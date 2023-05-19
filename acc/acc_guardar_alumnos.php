@@ -37,7 +37,7 @@
 
             include "../conexion.php";
 
-            $sql_act = "UPDATE alumnos SET nota_$columna=".$nota.", columna=".$columna." 
+            $sql_act = "UPDATE alumnos SET nota_$columna=".$nota.", columna_$columna=".$columna." 
                                         WHERE numero=".$fila;
             $res_act = mysqli_query($link, $sql_act);
 

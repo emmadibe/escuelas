@@ -196,7 +196,7 @@
                     <td> <?php echo $fila["cant_alumnos"] ?> </td>
                     <td> 
 
-                         <button type="button" class="btn btn-success"><a href="frm_notas.php?numero=1&curso=<?php echo $fila["curso"] ?>" class="btn btn-success"> <i class="bi bi-arrow-right-square-fill">Entrar</i></a></button>
+                         <button type="button" class="btn btn-success"><a href="frm_notas.php?columna=x&numero=1&curso=<?php echo $fila["curso"] ?>" class="btn btn-success"> <i class="bi bi-arrow-right-square-fill">Entrar</i></a></button>
 
                     </td>
                     </tr>

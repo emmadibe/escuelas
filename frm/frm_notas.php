@@ -121,15 +121,27 @@
 
                             <?php echo $f = $i + 1 ?>
 
-                            <form method="POST" action="../acc/acc_guardar_alumnos.php?curso=<?php echo $curso ?>&numero= <?php echo $f ?>">
+                            <?php
 
-                                <label for="nombre"></label>
-                                
-                                <input type="text" name="nombre">
-                                
-                                <input type="submit" name="boton" value="Guardar">
+                            //if(!isset($_GET["numero"])){
 
-                            </form>
+                            ?>
+
+                                <form method="POST" action="../acc/acc_guardar_alumnos.php?curso=<?php echo $curso ?>&numero= <?php echo $f ?>">
+
+                                    <label for="nombre"></label>
+                                    
+                                    <input type="text" name="nombre">
+                                    
+                                    <input type="submit" name="boton" value="Guardar">
+
+                                </form>
+
+                            <?php
+
+                               // }
+
+                            ?>
 
                             <?php
     
@@ -193,11 +205,32 @@
 
                                         $columna_real = $mostrar_columna["columna"];
 
-                                        while ($fila_columna = mysqli_fetch_array($res_columna)){
+                                        while ($fila_columna = mysqli_fetch_array($res_columna)){ //Con este while, logro que las notas aprezcan en pnatalla en la columna y fila que deben aparecer.
 
-                                            if($fila_columna["columna"] == $desde + 1 AND $fila_columna["numero"] == $i + 1){
+                                            if($fila_columna["columna_".($desde + 1).""] == $desde + 1 AND $fila_columna["numero"] == $i + 1){
+                                                //1) En la tabla "alumnos" de mi base de datos escuelas yo creo 10 campos llamados columna_1, columna_2 y así hasta llegar a columna_10. Recordar que la suma de 1 con la variable $desde me da el número de columna. Entonces, estoy diciendo que si columna_x es igual a columna... se hará la acción entre corchetes. 
+                                                //2) Pero además de posicionarme en la columna correcta, debo posicionarme en la fila correcta para la asignación de las notas. La suma de 1 con l variable $i me da el número de fila. El campo "numero" de mi tabla "alumnos" tiene un valor que se corresponde con la fila en la que estarán las notas de ese alumno. 
+                                                //3) O sea, mi condición de esta estructura condicional es que los valores de columna y de fila se correspondan a los de los campos columna y fila (numero).
 
-                                                echo $fila_columna["nota_".$fila_columna["columna"].""];
+                                                if($fila_columna["nota_".$fila_columna["columna_".($desde + 1).""].""] < 4){ //Si la nota es menor a 4, va aestar de color rojo.
+
+                                                    echo"<h3 style='color:red'>";
+
+                                                    }else if($fila_columna["nota_".$fila_columna["columna_".($desde + 1).""].""] > 4 AND $fila_columna["nota_".$fila_columna["columna_".($desde + 1).""].""] < 7){ //Si la nota esmayor a 4 y menor a 7, va a estar de color amarillo.
+
+                                                        echo"<h3 style='color:yellow'>";
+
+                                                        }else{//Solo queda una opción: que la nota sea mayor a 7. Ahí, estará de color verde.
+
+                                                            echo"<h3 style='color:green'>";
+
+                                                        }
+
+                                                               echo $fila_columna["nota_".$fila_columna["columna_".($desde + 1).""].""].
+                                                                //Imprimo la nota en pantalla. Recordá que en la tabla "alumnos" de mi base de datos escuela cree 10 campos llamados nota_1, nota_2 y así hasta llegar a nota_10. Como el número de nota se va a corresponder al número de columna, para saber qué nota es (si nota_1, nota_2, etc) saco el valor del campo columna. Para eso, debo hacer columna_". ($desde + 1) ya que la suma de 1 con $desde me arroja el número de columna.
+
+                                                        "</h3>";
+                                                    
 
                                             }
 
