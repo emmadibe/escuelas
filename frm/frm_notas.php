@@ -28,12 +28,16 @@
 <body>
 
     <?php
-
+    
+        SESSION_START();
+        
         include "../alertas.php";
         include "../conexion.php";
         include "../barra.php";
 
         $curso = $_GET["curso"];
+
+        $docente_id = $_SESSION["docente_id"];
 
         $sql = "SELECT * FROM cursos WHERE curso='".$curso."'";
         $res = mysqli_query($link, $sql);
@@ -149,7 +153,7 @@
 
                                     $numero = $_GET["numero"];
 
-                                    $sql_numero = "SELECT * FROM alumnos WHERE curso ='".$curso."'";
+                                    $sql_numero = "SELECT * FROM alumnos WHERE curso ='".$curso."' AND docente_id = ".$docente_id;
                                     //Me traigo todos los campos de la tabla alumnos en donde el campo curso sea igual a la variable curso. Eso es para traerme los datos de los alumnos del curso que me interesa. 
                                     $res_numero = mysqli_query($link, $sql_numero);
                                     $mostrar_numero = mysqli_fetch_array($res_numero);
@@ -199,7 +203,7 @@
                                         $columna = $_GET["columna"];
                                         $curso = $_GET["curso"];
                                         
-                                        $sql_columna = "SELECT * FROM alumnos WHERE curso = '".$curso."'";
+                                        $sql_columna = "SELECT * FROM alumnos WHERE curso = '".$curso."' AND docente_id=".$docente_id;
                                         $res_columna = mysqli_query($link, $sql_columna);
                                         $mostrar_columna = mysqli_fetch_array($res_columna);
 
@@ -216,7 +220,7 @@
 
                                                     echo"<h3 style='color:red'>";
 
-                                                    }else if($fila_columna["nota_".$fila_columna["columna_".($desde + 1).""].""] > 4 AND $fila_columna["nota_".$fila_columna["columna_".($desde + 1).""].""] < 7){ //Si la nota esmayor a 4 y menor a 7, va a estar de color amarillo.
+                                                    }else if($fila_columna["nota_".$fila_columna["columna_".($desde + 1).""].""] >= 4 AND $fila_columna["nota_".$fila_columna["columna_".($desde + 1).""].""] < 7){ //Si la nota esmayor a 4 y menor a 7, va a estar de color amarillo.
 
                                                         echo"<h3 style='color:yellow'>";
 

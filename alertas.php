@@ -107,6 +107,67 @@
 
             break;
 
+            case "ERROR_AUTORIZACION";
+
+?>
+
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+
+                    <strong>UPSSS</strong> El usuario y/o contraseña son incorrectos. <br>
+                    <strong>Lo siento.</strong> Intente nuevamente o creese un usuario nuevo.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>   
+                    </button>
+
+                </div>
+
+<?php
+
+            break;
+
+            case "NO_DOCENTE";
+
+?>
+
+                <div class="alert alert-danger" role="alert">
+
+                     Falta elegir el usuario y/contraseña!
+
+                </div>
+
+<?php
+
+            break;
+
+            case "DOCENTE_FRACASO";
+
+?>
+
+                <div class="alert alert-danger" role="alert">
+
+                     No se pudo crear el usuario!
+
+                </div>
+
+<?php
+
+            break;
+
+            case "DOCENTE_EXITO";
+
+?>
+
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+
+                    <strong>BIEN!</strong> El usuario fue creado con éxito. Usted ya puede iniciar sesión.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+
+<?php
+
         }
 
     }

@@ -44,15 +44,26 @@
 
     <?php
 
+        SESSION_START();
+
+        $docente_id = $_SESSION["docente_id"];
+
+        include "../barra.php";
         include "../alertas.php";
         include "../conexion.php";
 
-        $sql = "SELECT * FROM cursos";//Cuando cree el usuario pondré: WHERE usuario_id = $usuario_id para que solo me trtaiga los cursos de ESE usuario_id (sería un docente).
+        $sql = "SELECT * FROM cursos WHERE docente_id = ".$docente_id; //Traeme todos los datos de todos los campos de la tabla cursos en donde el campo docente_id tenga el mismo valor que la variable $docente_id. Así, me aseguro de traerme los datos que le corresponden a ESE docente.
         $res = mysqli_query($link, $sql);
 
     ?>
 
     <div class="conteiner text-center">
+
+        <div class="row">
+
+            <div class="col-12"><hr><h1 style="color:black">¡Hola, <?php echo $_SESSION["nombre"]; ?>!</h1><hr></div>
+
+        </div>
 
         <div class="row">
 
@@ -90,6 +101,13 @@
 
             <label for="cant_alumnos">Cantidad de alumnos</label>
             <input type="number" min="1" max="100" required name="cant_alumnos" placeholder="EJ: 27">    
+
+        </div>
+
+        <div class="form-group">
+
+            <label for="cant_notas">Cantidad de notas</label>
+            <input type="number" min="1" max="100" required name="cant_notas" placeholder="EJ: 27">    
 
         </div>
 
@@ -196,7 +214,7 @@
                     <td> <?php echo $fila["cant_alumnos"] ?> </td>
                     <td> 
 
-                         <button type="button" class="btn btn-success"><a href="frm_notas.php?columna=x&numero=1&curso=<?php echo $fila["curso"] ?>" class="btn btn-success"> <i class="bi bi-arrow-right-square-fill">Entrar</i></a></button>
+                         <button type="button" class="btn btn-success"><a href="frm_ver_notas_2do_intento.php?columna=x&numero=1&curso=<?php echo $fila["curso"] ?>" class="btn btn-success"> <i class="bi bi-arrow-right-square-fill">Entrar</i></a></button>
 
                     </td>
                     </tr>
