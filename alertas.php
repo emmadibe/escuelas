@@ -168,6 +168,40 @@
 
 <?php
 
+            break;
+
+            case "ACTUALIZADO";
+
+?>
+
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+
+                    <strong>BIEN!</strong> La nota fue guardada con éxito.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+
+<?php
+
+            break;
+
+            case "NO_ACTUALIZADO";
+
+?>
+
+                <div class="alert alert-danger" role="alert">
+
+                    No se pudo agregar la nota!
+
+                </div>
+
+
+<?php
+
+            break;
+
         }
 
     }

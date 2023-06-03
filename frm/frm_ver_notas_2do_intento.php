@@ -60,21 +60,21 @@
             <thead>
 
                 <tr>
-
-                    <th scope="col-2" style="background: yellow"> &nbsp; </th>
-                    <th scope="col-12" style="color: purple; background: pink" colspan="<?php echo $hasta ?>"> Agregar nota </th>
-                    <!-- El valor del atributo COLSPAN indica cuántas columnas adyacentes deben ser fusionadas en una sola celda, Sirve mucho para hacer encabezados.
-                En cambio, el atributo ROWSPAN es utilizado en tablas para fusionar o unir celdas adyacentes en una misma columna. -->
-
-                </tr>
-                
-                <tr>
-
-                    <th scope="col" style="background: yellow">
                     
+                    <th scope="col" style="background: yellow">
+                        
                         Nombre alumno
                 
                     </th>
+
+
+                    <th scope="col" style="color: purple; background: pink"> 
+                    
+                        Agregar nota 
+                    
+                    </th>
+                    <!-- El valor del atributo COLSPAN indica cuántas columnas adyacentes deben ser fusionadas en una sola celda, Sirve mucho para hacer encabezados.
+                En cambio, el atributo ROWSPAN es utilizado en tablas para fusionar o unir celdas adyacentes en una misma columna. -->
 
                 </tr>
 
