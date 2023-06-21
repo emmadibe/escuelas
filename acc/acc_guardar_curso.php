@@ -17,6 +17,7 @@
             $color_click = $_GET["color_click"];
             $docente_id = $_SESSION["docente_id"]; //Me traigo esta variable desde sesión. Es necesario para identificar qué curso le debo asignar a cada docente.
             $cant_notas = $_GET["cant_notas"];
+            $color_barra = $_GET["color_barra"];
 
             include "../conexion.php"; //Con el código dentro de este archivo me conecto al servidor de mi base de datos y a mi base de datos que es 
             
@@ -33,7 +34,8 @@
                                                     color_tabla,
                                                     color_click,
                                                     docente_id,
-                                                    cant_notas)
+                                                    cant_notas,
+                                                    color_barra)
 
                                                 VALUES('".$colegio."',
                                                     '".$curso."',
@@ -42,7 +44,8 @@
                                                     '".$color_tabla."',
                                                     '".$color_click."',
                                                     ".$docente_id.",
-                                                    ".$cant_notas.")";
+                                                    ".$cant_notas.",
+                                                    '".$color_barra."')";
 
                         $res = mysqli_query($link, $sql); //El link está dentro del archivo conexion.php incluido.
 

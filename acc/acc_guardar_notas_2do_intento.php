@@ -49,8 +49,7 @@
             $res_traer = mysqli_query($link, $sql_traer);
             $mostrar_traer = mysqli_fetch_array($res_traer);
 
-           
-            
+            $Notas_agregadas = array();
 
             if ($mostrar_traer['nota_array'] == NULL){ //El código entre corchetes se ejecutará si el campo nota_array de la tabla alumnos de mi base de datos escuelas es NULL; es decir, si aún no le he agregado ningún valor.             
                     //Yo lo que quiero es almacenar en un campo (nota_array) las notas de mi alumno. O sea, todas las notas, todos los números, deben estar en un campo. Para eo, utilizar un ARRAY es lo mejor ya que me permite almacenar distintos valores. Cada valor tendrá una posición en mi array. Acordate que la primera posición en todo array es 0.
@@ -70,7 +69,7 @@
 
                     $mostrar_deserializado = unserialize($mostrar_traer['nota_array']); //Me traigo, primero, los valores que ya tengo en el campo nota_array deserializado. Eso es necesario para poder agregarle valores.
 
-                    $Notas_agregadas = array($mostrar_deserializado, $nota); //Inicializo otro array llamado $Notas_agregadas a la cual le voy a poner los valores de $mostrar_deserializado (tiene los valores que el campo nota_array ya tenía) y de $nota.
+                    $Notas_agregadas[] = array($mostrar_deserializado, $nota); //Inicializo otro array llamado $Notas_agregadas a la cual le voy a poner los valores de $mostrar_deserializado (tiene los valores que el campo nota_array ya tenía) y de $nota.
 
                     $Notas_agregadas_serializadas = serialize($Notas_agregadas); //Serializo el array, lo cual es necesario para poder guardar sus valores en mi base de datos.
 

@@ -1,5 +1,27 @@
 <!DOCTYPE html>
 <html lang="es">
+
+<?php
+    
+    SESSION_START();
+    
+    include "../alertas.php";
+    include "../conexion.php";
+    include "../barra.php";
+    
+    $docente_id = $_SESSION["docente_id"];
+
+    $curso = $_GET["curso"];
+
+    $sql = "SELECT * FROM cursos WHERE curso='".$curso."'";
+    $res = mysqli_query($link, $sql);
+    $mostrar = mysqli_fetch_array($res);
+    $alto = $mostrar["cant_alumnos"];
+
+   
+
+?>
+
 <head>
 
     <meta charset="UTF-8">
@@ -23,30 +45,21 @@
 
     <title>Notas de los cursos</title>
 
+    <style>
+
+        body{
+
+            background: <?php echo $mostrar["color_fondo"] ?>
+
+        }
+
+    </style>
+
 </head>
 
 <body>
 
-    <?php
-    
-        SESSION_START();
-        
-        include "../alertas.php";
-        include "../conexion.php";
-        include "../barra.php";
-
-        $curso = $_GET["curso"];
-
-        $docente_id = $_SESSION["docente_id"];
-
-        $sql = "SELECT * FROM cursos WHERE curso='".$curso."'";
-        $res = mysqli_query($link, $sql);
-        $mostrar = mysqli_fetch_array($res);
-
-        $alto = $mostrar["cant_alumnos"];
-
-    ?>
-
+   
     <div class="conteiner text-center">
 
         <div class="row">
@@ -133,18 +146,19 @@
                                     
 
                                     while ($fila = mysqli_fetch_array($res_numero)){
-                                    if ($fila["numero"] == $i + 1){ //Lo hago para que coincida con el id de la celda. Así, solo se pondrá el nombre en la celda cuyo id coincide con el numero del alumno. 
-                                    echo '<h4 style="color:red">'.ucfirst($fila["nombre"]).'</h4>';
-                                    }
+                                        if ($fila["numero"] == $i + 1){ //Lo hago para que coincida con el id de la celda. Así, solo se pondrá el nombre en la celda cuyo id coincide con el numero del alumno. 
+                                        echo '<h4 style="color:red">'.ucfirst($fila["nombre"]).'</h4><br>';
+                                        }
                                     }
 //Gracias a este while y estos if, en cada celda me pondrá el nombre del alumno cuyo campo numero es igual al id de la celda (variable i + 2). Si no hiciera esto, aparecerían los nombres en todas las celdas. 
                                    
                                 }
 
-                        ?>
+                            ?>
 
                             </td>  
-                            
+                        
+
                             <td scope="col" style="background: pink" id="<?php echo $desde + 1 ?>">
                     
                                 <form method="POST" action="../acc/acc_guardar_notas_2do_intento.php?curso=<?php echo $curso ?>&fila=<?php echo ($i + 1) ?>">
@@ -158,13 +172,68 @@
 
                             </td>
 
+                            <td>
+
+                                <?php
+
+                                    $sql_notas = "SELECT * FROM alumnos WHERE curso ='".$curso."'";
+                                    $res_notas = mysqli_query($link, $sql_notas);
+                                    $muestrate_1 = mysqli_fetch_array($res_notas);
+                                   
+                                    while ($fila_2 = mysqli_fetch_array($res_notas)){
+
+                                        if($fila_2["numero"] == $i + 1 ){
+
+                                           // $notas_en_crudo = array (serialize($fila_2["nota_array"]));
+
+                                            $serializar = serialize($fila_2["nota_array"]);
+
+                                            $Notas_serializado[] = array ($serializar);
+                                            
+
+                                            echo '<pre>';
+
+                                                print_r($Notas_serializado);
+
+                                            echo '</pre>';
+                                            
+                                            //echo implode(', ', $Notas_deserializado); 
+
+                                            /*
+                                            echo '<pre>';
+
+                                                print_r($notas_deserializadas_again);
+
+                                            echo '</pre>';
+                                            */
+
+                                        }
+
+                                    }
+                                    
+                                // }
+
+                                ?>
+
+                            </td>
+
                     <?php
                             
                         }//Cierro bucle for
 
                     ?>
 
-                </tr>
+
+
+                </tr>     
+                
+                <script>
+                    
+                    $(document).ready(function(){
+
+                    }
+
+                </script>
                 
             </tbody>
 

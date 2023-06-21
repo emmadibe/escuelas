@@ -2,6 +2,12 @@
 
   @SESSION_START();
 
+  include "conexion.php";
+
+  $sql = "SELECT * FROM docentes WHERE docente_id = ".$_SESSION["docente_id"]."";
+  $res = mysqli_query($link, $sql);
+  $mostrar = mysqli_fetch_array($res);
+  
 ?>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-danger">
@@ -17,9 +23,15 @@
       <li class="nav-item">
         <a class="nav-link" href="../acc/acc_cerrar_sesion.php">Cerrar sesión</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Pricing</a>
-      </li>
+
+      <?php if(($mostrar["rol_id"]) == 1){ //La idea es que solo los administradores (rol_id == 1) puedan ver a todos los docentes que hay para poder hacerles modificaciones.  ?>
+
+        <li class="nav-item">
+          <a class="nav-link" href="frm_ver_todos_docentes.php">Ver docentes</a>
+        </li>
+
+      <?php } ?>
+
       <li class="nav-item">
         <a class="nav-link disabled">Disabled</a>
       </li>

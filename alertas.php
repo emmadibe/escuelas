@@ -202,6 +202,69 @@
 
             break;
 
+            case "BORRADO_EXITO";
+
+?>
+
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+
+                    <strong>BIEN!</strong> El curso fue borrado con éxito.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+
+<?
+
+            break;
+
+            case "BORRADO_FRACASO";
+
+?>
+
+                <div class="alert alert-danger" role="alert">
+
+                    No se pudo borrar el curso!
+
+                </div>
+
+
+<?php
+
+            break;
+
+            case "EDITADO_CURSO_EXITO";
+
+?>
+
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+
+                <strong>BIEN!</strong> El curso fue editado con éxito.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+                </div>            
+
+<?php
+
+            break;
+
+            case "EDITADO_CURSO_FRACASO";
+
+?>
+
+                <div class="alert alert-danger" role="alert">
+
+                    No se pudo editar el curso!
+
+                </div>
+
+<?php
+
+            break;
+
         }
 
     }

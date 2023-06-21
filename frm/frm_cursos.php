@@ -54,6 +54,7 @@
 
         $sql = "SELECT * FROM cursos WHERE docente_id = ".$docente_id; //Traeme todos los datos de todos los campos de la tabla cursos en donde el campo docente_id tenga el mismo valor que la variable $docente_id. Así, me aseguro de traerme los datos que le corresponden a ESE docente.
         $res = mysqli_query($link, $sql);
+        $mostrar = mysqli_fetch_array($res);
 
     ?>
 
@@ -158,6 +159,21 @@
 
         </div>
 
+        <div class="form-group">
+
+            <label for="color_barra">Seleccionar el color de la barra</label>
+
+                <select class="form-control" name="color_barra">
+
+                    <option value="bg-dark">Negro</option>
+                    <option value="bg-danger">Rojo</option>
+                    <option value="bg-light">gris</option>
+                    <option value="bg-success">verde</option>
+
+                </select>
+
+        </div>
+
 
                 <button type="submit" class="btn btn-warning" name="boton">Crear curso</button>
 
@@ -197,6 +213,8 @@
             <th scope="col">Escuela</th>
             <th scope="col">Cantidad de alumnos</th>
             <th scope="col">Ingresar al curso</th>
+            <th scope="col"> <i class="bi bi-archive-fill bg-danger">Eliminar curso</i></th>
+            <th scope="col"> <i class="bi bi-brush bg-warning">Editar curso</i></th>
             </tr>
 
         </thead>
@@ -205,18 +223,83 @@
 
             <?php
 
-                while ($fila = mysqli_fetch_array($res)){
+                while ($fila = mysqli_fetch_array($res)){ //Mientras que existan datos en $res, me los va a traer.
 
             ?>
                     <tr>
-                    <th scope="row"> <?php echo $fila["curso"] ?> </th>
-                    <td> <?php echo $fila["colegio"] ?> </td>
-                    <td> <?php echo $fila["cant_alumnos"] ?> </td>
-                    <td> 
 
-                         <button type="button" class="btn btn-success"><a href="frm_ver_notas_2do_intento.php?columna=x&numero=1&curso=<?php echo $fila["curso"] ?>" class="btn btn-success"> <i class="bi bi-arrow-right-square-fill">Entrar</i></a></button>
+                        <th scope="row"> <?php echo $fila["curso"] ?> </th>
+                        <td> <?php echo $fila["colegio"] ?> </td>
+                        <td> <?php echo $fila["cant_alumnos"] ?> </td>
+                        <td> 
 
-                    </td>
+                            <button type="button" class="btn btn-success"><a href="frm_ver_notas_2do_intento.php?columna=x&numero=1&curso=<?php echo $fila["curso"] ?>" class="btn btn-success"> <i class="bi bi-arrow-right-square-fill">Entrar</i></a></button>
+
+                        </td>
+
+                        <td>
+
+                            <!--  --------------MODAL ELIMINAR----------    -->
+                            <div class="modal" tabindex="-1" id="modal_eliminar<?php echo $mostrar["curso"]; ?>">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                <div class="modal-header bg-danger">
+                                                    <h5 class="modal-title ">ATENCIÓN, <?php echo $_SESSION["nombre"] ?>!!</h5> 
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>¿Está seguro de eliminar el curso <?php echo $mostrar["curso"]?>?</p>
+                                                    <p>Esta accion no se puede revertir.</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                    <a href="../acc/acc_borrar_curso.php?docente_id=<?php echo $mostrar["docente_id"] ?>&curso=<?php echo $mostrar["curso"]; ?>" class="btn btn-danger">Eliminar partida</a>
+                                                    <!-- Si aprieto "Eliminar Partida", el botón, que es un vínculo con forma de botón, me reedirige a acc_borrar_cursos.php. -->
+                                                </div>
+                                            </div>
+                                            </div>
+                            </div>
+                                        
+                                
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_eliminar<?php echo $mostrar["curso"]; ?>"><i class="bi bi-x-octagon-fill"></i></button>  
+                                        <!-- El modal y el ícono de la cruz lo saco de Boostrap. 
+                                        Al hacer click sobre el botón abre el modal cuyo target es el id (#) modal_eliminarnombrecurso. Acordate que el # indica que es un id. Entonces, cuando clickeo el botón abre el elemento que tenga ese id.
+                                                Me llevo la variable $mostrar["curso"] a acc_borrar_curso.php vía URL (GET) para que el sistema sepa qué dato, que curso, borrar.
+                                            Obviamente, también mellevo a la variable docente_id para que sepa de qué docente es el curso.
+                                            -->
+
+                        </td>
+
+                        <td>
+                            <!-- MODAL EDITAR -->
+                            <div class="modal fade" id="modal_editar_curso<?php echo $fila["curso"]?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content bg-primary"> <?php //Aquí edito el color de fondo del cuerpo del modal ?>
+                                    <div class="modal-header bg-warning"> <?php //Como su nombre lo indica (header = cabeza), aquí eduçito el color de fondo de la cabecera del modal ?>
+                                        <h5 class="modal-title" id="exampleModalLabel" style="color:green">Hola, <?php echo $_SESSION["nombre"]; ?></h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h6 style="color:pink">¿Desea editar el curso <?php echo $fila["curso"] ?>?</h6>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                        <a href="frm_editar_curso.php?docente_id=<?php echo $mostrar["docente_id"] ?>&curso=<?php echo $fila["curso"]; ?>" class="btn btn-primary"> Editar curso</a> <?php //Me llevo el curso y el docente_id para que el programa sepa qué datos editarme ?>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- FIN DE MODAL EDITAR -->
+                            <!-- Botón que me abrirá el modal editar: -->
+                             <button type="button" class="btn btn-warning boton_editar_curso"  id="<?php echo $fila["curso"] ?>"data-toggle="modal" data-target="#modal_editar_curso<?php echo $fila["curso"] ?>"><i class="bi bi-pen"></i></button> 
+
+
+                        </td>
+
                     </tr>
 
             <?php
