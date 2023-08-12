@@ -48,6 +48,7 @@
             include "../conexion.php";
             include "../barra.php";
             include "../alertas.php";
+            include "../modal_editar.php";
 
             $sql ="SELECT * FROM docentes";
             $res = mysqli_query($link, $sql);
@@ -135,7 +136,7 @@
 
                                 <td>
 
-                                    <!-- /////////MODAL ELIMINAR//////// -->
+                                    <!-- -------------------------------------MODAL ELIMINAR------------------------------------------------ -->
 
                                     <div class="modal" tabindex="-1" id="modal_eliminar_docente">
                                             <div class="modal-dialog">
@@ -160,16 +161,18 @@
                                             </div>
                                         </div>
 
-                                    <!-- /////////FIN DEL MODAL ELIMINAR//////// -->
 
-                                <!-- Botón que abrirá el Modal de eliminar -->
+                            <!-- -------------------------------------FIN DEL MODAL ELIMINAR------------------------------------------------ -->
+            
+
+                                    <!-- Botón que abrirá el Modal de eliminar -->
                                     <button type="button" class="btn btn-danger boton_borrar_docente"  id="<?php echo $fila["docente_id"] ?>" data-toggle="modal_eliminar" data-target="#modal_eliminar_usuario<?php echo $fila["docente_id"]; ?>"><i class="bi bi-person-x-fill">Eliminar</i></button>  
                                     <!-- /////////////////////////////////// -->
 
-                                    <!-- ////////////////////////////MODAD EDITAR ///////////////////////////////////////////////////////////////////// -->
-
-                                            <!-- ////////////////////////FIN DEL MODAL EDITAR ////////////////////////////////////////////////// -->
-
+                                    <!-- //////////////////BOTÓN QUE ABRE EL MODAL DE EDITAR////////////////// -->
+                                    <button type="button" class="btn btn-warning boton_editar_docente" id="<?php echo $fila["docente_id"]; ?>"><i class="bi bi-brush-fill bg-warning"></i></button>
+                                    <!-- Me llevo vía url (GET) al docente_id para identificar qué dato debo editar. Es el botón que me abrirá el modal editar. El modal editar y el de eliminar los puse en un archivo aparte para que no se genere un choclo de código en el presente archivo.-->
+                                    <!-- ////////////////////////FIN DEL BOTÓN QUE ABRE EL MODAL EDITAR EDITAR ////////////////////////////////////////////////// -->
                                 </td>
 
                             </tr>
@@ -220,8 +223,53 @@
 
                 })
 
-            })//function
+                //////////////Editemos al docente en un segundo plano/////////////////////////////
+                $('.boton_editar_docente').click(function(){ //Cuando hago click (click) sobre el elemento cuya clase (.) es boton_editar_docente, haceme la siguiente función o actividad:
+
+                    var docente_id = this.id;
+
+                    $.get("../acc/acc_datos_docente.php", {docente_id : docente_id}, function(data){ //Me llevo vía get la variable docente_id al archivo acc_datos_docente.php. Eso, junto con las acciones que hay en ese archivo, serán ejecutadas en segundo plano porque trabajo con la función .get de JS.
+                    //{nombre de la variable : valor de la variable}. Entonces, lo que yo envié a acc_datos_usuario.php es la variable llamada docente_id con el contenido docente_id
+
+                        $("#modal_editar_docente_docente").val(data.nombre); //Con el método val le asigno un  valor al elemento seleccionado con $ (el modal, en mi caso). Ese valor asignado va entre paréntesis. En mi caso, será el valor del campo nombre almacenado en la variable data (traído y codificado con json). De esta manera, al abrirse el modal me aparecerá en "nombre" el valor que ya estaba asignado.
+                        $("#modal_editar_docente_pass").val(data.contraseña);
+                        $("#modal_editar_docente_rol option [value = '"+data.rol_id+"']").prop("selected", "true");//Lo que le digo es: en el input con el id (#) modal_editar_docente_rol que tenga en option el atributo value cuyo valor sea el campo rol_id que está almacenado en la variable data, agregale el atributo ( función .prop) selected.  Recordar que con selected aparece ese valor como el predeterminado. Es, de nuevo, para que el usuario vea primero el valor original.
+                            //Acordate que en JS se concatena con un signo más (+), no con un punto (.) como en PHP.
+                        //En estte bloque de código (conjunto de sentencias), lo que hago es agregarle al elemento que posee el id (#) modal_editar_docente, el valor de la variable nombre que me traigo de acc_datos_usuario.php. Y lo mismo con contraseña y rol. Es, simplemente, para que el usuairo vea cuáles eran los valores anteriores de los elementos antes de ponerse a editarlos.  
+
+                    }, "json")
+
+                    $('#modal_editar_docente').modal('show'); //Luego de todo lo anterior, me muestra (show) el modal cuyo id (#) es modal_editar_docente
+                    $('#modal_editar_docente_guardar').click (function(e){ //Cuando haga click (click) el id modal_editar_docente_guardar, hacé la siguiente actividad:
+
+                    e.preventDefault(); //Función que evita a toda costa que haya un reedireccionamiento.
+
+                    //Defino las variables que me voy a llevar luego a acc_editar_docente_2do_plano.php. El valor de estas variables son, en un inicio, el valor de lo que me traigo de acc_datos_docente.php con json y lo coloco en cada sección (que tiene su id #) del modal.
+                    var nombre = $('#modal_editar_docente_docente').val(); //Si el valor original del campo nombre de la tabla docente es "Emmanuel Di Benedetto", a la variable nombre se le asignará "Emmanuel Di Benedetto". Es para que el usuario vea cuál es el valor original del campo. Y asó con contraseña y rol_id. //le asigno todas los valores queme traje con json a las siguientes variables que creo.
+                    var contraseña = $('#modal_editar_docente_pass').val();
+                    var rol_id = $('#modal_editar_docente_rol').val();
+
+                    $.get('../acc/acc_editar_docente_2do_plano.php',
+                            {docente_id : docente_id,                                 
+                                contraseña : contraseña,
+                                nombre : nombre,
+                                rol_id : rol_id},  //Llevo todas las variables editadas en el modal cuyo id  es  modal_editar_usuario_... al archivo acc_editar_docente_2do_plano.php. Obviamente, se envían con el método GET.
+                                
+                                function(data){
+
+                                },
+
+                        "json")//get
+
+                    $('#modal_editar_docente').modal("hide");
+                    
+                    }) //click modal_editar_docente_guardar
+
+                })//click boton_editar_docente
+
+            });//function
 
         </script>
 
 </body>
+</html>
