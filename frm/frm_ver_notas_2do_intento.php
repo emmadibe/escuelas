@@ -10,13 +10,15 @@
     include "../barra.php";
     
     $docente_id = $_SESSION["docente_id"];
-
+ 
     $curso = $_GET["curso"];
 
     $sql = "SELECT * FROM cursos WHERE curso='".$curso."'";
     $res = mysqli_query($link, $sql);
     $mostrar = mysqli_fetch_array($res);
     $alto = $mostrar["cant_alumnos"];
+
+    $curso_id = $_GET["curso_id"];
 
    
 
@@ -117,7 +119,7 @@
 
                             ?>
 
-                                <form method="POST" action="../acc/acc_guardar_notas_2do_intento.php?curso=<?php echo $curso ?>&numero= <?php echo $f ?>">
+                                <form method="POST" action="../acc/acc_guardar_notas_2do_intento.php?curso=<?php echo $curso ?>&numero= <?php echo $f ?>&curso_id=<?php echo $curso_id?>">
 
                                     <label for="nombre"></label>
                                     
@@ -147,7 +149,7 @@
 
                                     while ($fila = mysqli_fetch_array($res_numero)){
                                         if ($fila["numero"] == $i + 1){ //Lo hago para que coincida con el id de la celda. Así, solo se pondrá el nombre en la celda cuyo id coincide con el numero del alumno. 
-                                        echo '<h4 style="color:red">'.ucfirst($fila["nombre"]).'</h4><br>';
+                                            echo '<h4 style="color:red">'.ucfirst($fila["nombre"]).'</h4><br>';
                                         }
                                     }
 //Gracias a este while y estos if, en cada celda me pondrá el nombre del alumno cuyo campo numero es igual al id de la celda (variable i + 2). Si no hiciera esto, aparecerían los nombres en todas las celdas. 
@@ -161,7 +163,7 @@
 
                             <td scope="col" style="background: pink" id="<?php echo $desde + 1 ?>">
                     
-                                <form method="POST" action="../acc/acc_guardar_notas_2do_intento.php?curso=<?php echo $curso ?>&fila=<?php echo ($i + 1) ?>">
+                                <form method="POST" action="../acc/acc_guardar_notas_2do_intento.php?curso=<?php echo $curso ?>&fila=<?php echo ($i + 1) ?>&curso_id=<?php echo $curso_id?>">
 
                                     <label for="nota"></label>
                                     <input type="number" min="1" max="10" placeholder="Ej: 7" name="nota">
@@ -179,37 +181,41 @@
                                     $sql_notas = "SELECT * FROM alumnos WHERE curso ='".$curso."'";
                                     $res_notas = mysqli_query($link, $sql_notas);
                                     $muestrate_1 = mysqli_fetch_array($res_notas);
-                                   
-                                    while ($fila_2 = mysqli_fetch_array($res_notas)){
 
-                                        if($fila_2["numero"] == $i + 1 ){
+                                 
 
-                                           // $notas_en_crudo = array (serialize($fila_2["nota_array"]));
+                                        while ($fila_2 = mysqli_fetch_array($res_notas)){
 
-                                            $serializar = serialize($fila_2["nota_array"]);
+                                            if(($fila_2["numero"] == $i + 1 ) && ($muestrate_1["curso_id"] == $curso_id)){
 
-                                            $Notas_serializado[] = array ($serializar);
-                                            
+                                            // $notas_en_crudo = array (serialize($fila_2["nota_array"]));
 
-                                            echo '<pre>';
+                                                $serializar = serialize($fila_2["nota_array"]);
 
-                                                print_r($Notas_serializado);
+                                                $Notas_serializado[] = array ($serializar);
+                                                
 
-                                            echo '</pre>';
-                                            
-                                            //echo implode(', ', $Notas_deserializado); 
+                                                echo '<pre>';
 
-                                            /*
-                                            echo '<pre>';
+                                                    print_r($Notas_serializado);
 
-                                                print_r($notas_deserializadas_again);
+                                                echo '</pre>';
+                                                
+                                                //echo implode(', ', $Notas_deserializado); 
 
-                                            echo '</pre>';
-                                            */
+                                                /*
+                                                echo '<pre>';
+
+                                                    print_r($notas_deserializadas_again);
+
+                                                echo '</pre>';
+                                                */
+
+                                            }
 
                                         }
 
-                                    }
+                                    
                                     
                                 // }
 
@@ -227,13 +233,7 @@
 
                 </tr>     
                 
-                <script>
-                    
-                    $(document).ready(function(){
-
-                    }
-
-                </script>
+              
                 
             </tbody>
 

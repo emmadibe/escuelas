@@ -25,7 +25,7 @@
 
         if($res){
 
-             header("location:../frm/frm_notas.php?INFORMACION=ISSET_ALUMNO&curso=$curso&numero=$numero");
+             header("location:../frm/frm_ver_notas_2do_inento.php?INFORMACION=ISSET_ALUMNO&curso=$curso&numero=$numero&columna=$columna");  //Variables que deben existir para que no me tire un error.
 
         }else{
 

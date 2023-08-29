@@ -25,8 +25,6 @@
             $res_1 = mysqli_query($link, $sql_1);
             $mostrar_1 = mysqli_fetch_array($res_1);
 
-            if($mostrar_1["curso"] != $curso){ //Hago esto porque el nombre del curso me sirve como id. No puede repetirse, por ende. 
-
                         $sql = "INSERT INTO cursos (colegio, 
                                                     curso,
                                                     cant_alumnos,
@@ -51,7 +49,7 @@
 
                         if ($res){
 
-                            header ("location:../frm/frm_notas.php?INFORMACION=EXITO_GUARDAR_CURSO&curso=$curso");
+                            header ("location:../frm/frm_ver_notas_2do_intento.php?INFORMACION=EXITO_GUARDAR_CURSO&curso=$curso");
 
                         }else{
 
@@ -59,11 +57,7 @@
 
                         }
 
-            }else{
-
-                header("location:../frm/frm_cursos.php?INFORMACION=YA_EXISTE");
-
-            }
+          
 
        }else{
 

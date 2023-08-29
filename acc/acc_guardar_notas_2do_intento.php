@@ -12,26 +12,29 @@
         $numero = $_GET["numero"];
         $curso = $_GET["curso"]; //Me tuve que traer la variable curso vía GET porque sino, una vez que vuelva a fr_notas, no voy a tener esa variable y el programa me va a tirar un UNDEFINIDED VARIABLE.
         $docente_id = $_SESSION["docente_id"];
+        $curso_id = $_GET["curso_id"];
 
         include "../conexion.php";
 
         $sql = "INSERT INTO alumnos (nombre,
                                      numero,
                                      curso,
-                                     docente_id) 
+                                     docente_id,
+                                     curso_id) 
                             VALUES('".$nombre."',
                                     ".$numero.",
                                     '".$curso."',
-                                    ".$docente_id.")";                                  
+                                    ".$docente_id.",
+                                    ".$curso_id.")";                                  
         $res = mysqli_query($link, $sql);
 
         if($res){
 
-             header("location:../frm/frm_ver_notas_2do_intento.php?INFORMACION=ISSET_ALUMNO&curso=$curso&numero=$numero");
+             header("location:../frm/frm_ver_notas_2do_intento.php?INFORMACION=ISSET_ALUMNO&curso=$curso&numero=$numero&curso_id=$curso_id");
 
         }else{
 
-            header("location:../frm/frm_ver_notas_2do_intento.php?INFORMACION=!ISSET_ALUMNO&curso=$curso");
+            header("location:../frm/frm_ver_notas_2do_intento.php?INFORMACION=!ISSET_ALUMNO&curso=$curso&curso_id=$curso_id");
 
         }
 
@@ -40,8 +43,9 @@
             $fila = $_GET["fila"];
             $curso = $_GET["curso"];
             $nota=$_POST["nota"];
+            $curso_id=$_GET["curso_id"]; //Es necesario el curso_id para que en pantalla luego se impriman las notas que corresponden a ESA fila y a ESE curso_id. Sino, se pueden imprimir en pantalla todas las notas que correspondan a ESA fila, pero a cualquier curso.
 
-            //Me conecto ami base de datos:
+            //Me conecto a mi base de datos:
             include "../conexion.php";
 
             //Me traigo el campo nota_array de la tabla alumnos de la base de datos escuelas para poder utilizarlo:
@@ -57,10 +61,10 @@
                     $Notas_envio = serialize($Notas); //Serializo el array. Eso es necesario para poder guardarla en mi base de datos. Sino, no se puede. 
 
                     $sql_act = "UPDATE alumnos SET nota_array='".$Notas_envio."' 
-                                                WHERE numero=".$fila; //Ahora sí, actualizo (UPDATE) mi tabla alumnos guardando el valor de mi array serializado $Notas_envio en el campo nota_array.
+                                                WHERE numero=".$fila." && curso_id=".$curso_id."" ; //Ahora sí, actualizo (UPDATE) mi tabla alumnos guardando el valor de mi array serializado $Notas_envio en el campo nota_array.
                     $res_act = mysqli_query($link, $sql_act);
 
-                    header("location:../frm/frm_ver_notas_2do_intento.php?curso=$curso&numero=$fila");
+                    header("location:../frm/frm_ver_notas_2do_intento.php?curso=$curso&numero=$fila&curso_id=$curso_id");
                     
 
                      
@@ -74,7 +78,7 @@
                     $Notas_agregadas_serializadas = serialize($Notas_agregadas); //Serializo el array, lo cual es necesario para poder guardar sus valores en mi base de datos.
 
                     $sql_act = "UPDATE alumnos SET nota_array='".$Notas_agregadas_serializadas."'
-                                                    WHERE numero=".$fila; //Ahora sí: actualizo mi field nota_array.
+                                                    WHERE numero=".$fila." && curso_id=".$curso_id.""; //Ahora sí: actualizo mi field nota_array.
                     $res_act = mysqli_query($link, $sql_act);
 
                     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -88,11 +92,11 @@
 
                     if($res_act){
 
-                        header("location:../frm/frm_ver_notas_2do_intento.php?INFORMACION=ACTUALIZADO&curso=$curso&numero=$fila");
+                        header("location:../frm/frm_ver_notas_2do_intento.php?INFORMACION=ACTUALIZADO&curso=$curso&numero=$fila&curso_id=$curso_id");
 
                     }else{
 
-                        header("location:../frm/frm_ver_notas_2do_intento.php?INFORMACION=NO_ACTUALIZADO&curso=$curso&numero=$fila");
+                        header("location:../frm/frm_ver_notas_2do_intento.php?INFORMACION=NO_ACTUALIZADO&curso=$curso&numero=$fila&curso_id=$curso_id");
 
                     }
 

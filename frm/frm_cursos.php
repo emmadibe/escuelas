@@ -71,7 +71,10 @@
             <div class="col-12"><hr><h1>Crear curso</h1><hr></div>
 
         </div>
-        
+
+   
+
+
     <div class="row">
 
         <div class="col-4">
@@ -233,7 +236,7 @@
                         <td> <?php echo $fila["cant_alumnos"] ?> </td>
                         <td> 
 
-                            <button type="button" class="btn btn-success"><a href="frm_ver_notas_2do_intento.php?columna=x&numero=1&curso=<?php echo $fila["curso"] ?>" class="btn btn-success"> <i class="bi bi-arrow-right-square-fill">Entrar</i></a></button>
+                            <button type="button" class="btn btn-success"><a href="frm_ver_notas_2do_intento.php?columna=x&numero=1&curso=<?php echo $fila["curso"] ?>&curso_id=<?php echo $fila["curso_id"]?>" class="btn btn-success"> <i class="bi bi-arrow-right-square-fill">Entrar</i></a></button>
 
                         </td>
 
@@ -299,7 +302,7 @@
 
 
                         </td>
-
+                 
                     </tr>
 
             <?php
@@ -312,6 +315,8 @@
 
     </div> <?php //conteiner ?> 
 
+
+ 
 </body>
 
 </html>

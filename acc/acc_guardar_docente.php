@@ -1,13 +1,13 @@
 <?php
 
+    include "../conexion.php";
+
     if(!isset($_POST["usuario"]) AND
         (!isset($_POST["pass"]))){
 
             header("location:../frm/frm_crear_docente.php?INFORMACION=NO_DOCENTE");
 
         }else{
-
-            include "../conexion.php";
 
             $usuario = $_POST["usuario"];
             $pass = $_POST["pass"];
@@ -35,5 +35,6 @@
             }
 
         }
+
 
 ?>

@@ -21,7 +21,7 @@
             <div class="modal-body">
                 
             
-                <form action="../acc/acc_editar_docente_2do_plano.php" method="POST">
+                <form action="../acc/acc_editar_docente_segundoplano.php" method="GET">
                     <div class="form-group">
                         <label for="nombre">Usuario</label>
                         <input type="text" class="form-control" id="modal_editar_docente_docente" name="nombre" placeholder="Ej.: Emma" required>
@@ -30,6 +30,13 @@
                         <label for="contraseña">Contraseña</label>
                         <input type="password" class="form-control" id="modal_editar_docente_pass" name="contraseña" placeholder="<?php echo $mostrar["contraseña"]?>" required>
                     </div>
+                    <!-- Debo creau un nuevo formulario para el id. Pues, necesito que los valores de la variable docente_id que recupero de acc_datos_docente.php para editar al docente en segundo plano se guarden en el id de este formulario del modal para después recuperarlo, asignarlo a la nueva variable docente_id y enviarlo a acc_editar_docente_segundoplano.php. El programa debe saber a qué docente editar.   -->
+                    <div class="form-group">
+                        <label for="id"></label>
+                        <input type="hidden" class="form-control" id="modal_editar_docente_id" name="id">
+                    </div>
+                    <!-- Como type escribí "hidden" para que no se vea. Pues, a mi no me interesa que se vea el id. Es solo para poder recuperar la información, no para que lo vea el usuario.   -->
+
                     <div class="form-group">
                         <label for="rol_id">Rol</label>
                         <select class="form-control" name="rol_id" id="modal_editar_docente_rol">

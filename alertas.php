@@ -240,10 +240,10 @@
 
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
 
-                <strong>BIEN!</strong> El curso fue editado con éxito.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                    <strong>BIEN!</strong> El curso fue editado con éxito.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
 
                 </div>            
 
@@ -258,6 +258,37 @@
                 <div class="alert alert-danger" role="alert">
 
                     No se pudo editar el curso!
+
+                </div>
+
+<?php
+
+            break;
+
+            case "FOTO_EXITO";
+
+?>
+
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+
+                    <strong>BIEN!</strong> La foto fue cargada con éxito.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>                  
+
+<?php
+
+            break;
+
+            case "FOTO_FRACASO";
+
+?>
+
+                <div class="alert alert-danger" role="alert">
+
+                    No se pudo cargar la foto de perfil!
 
                 </div>
 

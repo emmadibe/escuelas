@@ -168,11 +168,14 @@
                                     <!-- Botón que abrirá el Modal de eliminar -->
                                     <button type="button" class="btn btn-danger boton_borrar_docente"  id="<?php echo $fila["docente_id"] ?>" data-toggle="modal_eliminar" data-target="#modal_eliminar_usuario<?php echo $fila["docente_id"]; ?>"><i class="bi bi-person-x-fill">Eliminar</i></button>  
                                     <!-- /////////////////////////////////// -->
+                                    
 
                                     <!-- //////////////////BOTÓN QUE ABRE EL MODAL DE EDITAR////////////////// -->
-                                    <button type="button" class="btn btn-warning boton_editar_docente" id="<?php echo $fila["docente_id"]; ?>"><i class="bi bi-brush-fill bg-warning"></i></button>
+                                    <button type="button" class="btn btn-warning boton_editar_docente" id="<?php echo $fila["docente_id"] ?>"><i class="bi bi-brush-fill bg-warning"></i></button>
                                     <!-- Me llevo vía url (GET) al docente_id para identificar qué dato debo editar. Es el botón que me abrirá el modal editar. El modal editar y el de eliminar los puse en un archivo aparte para que no se genere un choclo de código en el presente archivo.-->
                                     <!-- ////////////////////////FIN DEL BOTÓN QUE ABRE EL MODAL EDITAR EDITAR ////////////////////////////////////////////////// -->
+
+
                                 </td>
 
                             </tr>
@@ -193,14 +196,14 @@
 
             $(document).ready(function(){//Sobre este documento, este archivo, cuando esté listo realizá las siguientes funciones o actividades:
 
-                //Cambiemos las alertas para que desaparezcan después de unos segundos:
+                ////////////////Cambiemos las alertas para que desaparezcan después de unos segundos:
                 $('.alert button').hide();
 
                 setInterval(function(){
                     $('.alert').hide("slow");
                 }, 3000); //Oculta las alertas luego de que pasen 3000 milisegundos (3 segundos).
 
-                //Vamos a eliminar al usuario, al docente, en un segundo plano, sin reedireccionamientos ni recargas de páginas:
+                //////////////////////Vamos a eliminar al usuario, al docente, en un segundo plano, sin reedireccionamientos ni recargas de páginas:
                 $('.boton_borrar_docente').click(function(){ //Cuando hagas click (click) sobre el elemento cuya clase (.) es boton_borrar_docente, hacé la siguiente función o actividad:
 
                     var docente_id = this.id; //Primero, creame una variable (var) llamada docente_id cuyo valor sea el id (.id) del último elemento seleccionado (this). En mi caso, el último elemento seleccionado es aquel cuya clase es boton_borrar_docente.
@@ -223,53 +226,88 @@
 
                 })
 
+
                 //////////////Editemos al docente en un segundo plano/////////////////////////////
-                $('.boton_editar_docente').click(function(){ //Cuando hago click (click) sobre el elemento cuya clase (.) es boton_editar_docente, haceme la siguiente función o actividad:
+          //A diferencia de proyectos anteriores míos, está vez el código de edición en segundo plano lo hice de forma más prolija. Dividí los pasos en funciones. Sino, quedaba un choclo de código medio inentendible.  
 
-                    var docente_id = this.id;
+            $(document).ready(function() { //En el presente documento (document) cuando esté listo (ready) haceme las siguietes funciones o actividades:
 
-                    $.get("../acc/acc_datos_docente.php", {docente_id : docente_id}, function(data){ //Me llevo vía get la variable docente_id al archivo acc_datos_docente.php. Eso, junto con las acciones que hay en ese archivo, serán ejecutadas en segundo plano porque trabajo con la función .get de JS.
-                    //{nombre de la variable : valor de la variable}. Entonces, lo que yo envié a acc_datos_usuario.php es la variable llamada docente_id con el contenido docente_id
+                $(".boton_editar_docente").click(function() { //Cuando haga click (click) en el elemento (yo no sé que es un botón) cuya clase (.) es boton_editar_docente, haceme la siguiente función 
 
-                        $("#modal_editar_docente_docente").val(data.nombre); //Con el método val le asigno un  valor al elemento seleccionado con $ (el modal, en mi caso). Ese valor asignado va entre paréntesis. En mi caso, será el valor del campo nombre almacenado en la variable data (traído y codificado con json). De esta manera, al abrirse el modal me aparecerá en "nombre" el valor que ya estaba asignado.
-                        $("#modal_editar_docente_pass").val(data.contraseña);
-                        $("#modal_editar_docente_rol option [value = '"+data.rol_id+"']").prop("selected", "true");//Lo que le digo es: en el input con el id (#) modal_editar_docente_rol que tenga en option el atributo value cuyo valor sea el campo rol_id que está almacenado en la variable data, agregale el atributo ( función .prop) selected.  Recordar que con selected aparece ese valor como el predeterminado. Es, de nuevo, para que el usuario vea primero el valor original.
-                            //Acordate que en JS se concatena con un signo más (+), no con un punto (.) como en PHP.
-                        //En estte bloque de código (conjunto de sentencias), lo que hago es agregarle al elemento que posee el id (#) modal_editar_docente, el valor de la variable nombre que me traigo de acc_datos_usuario.php. Y lo mismo con contraseña y rol. Es, simplemente, para que el usuairo vea cuáles eran los valores anteriores de los elementos antes de ponerse a editarlos.  
+                    var docente_id = this.id; //Le asigno a la variable docente_id el valor del id del elemento (el programa no sabe que es un botón) cuya clase (.) es boton_editar_docente.
 
-                    }, "json")
+                // console.log(docente_id); //Todos los consol.log es para ver el funcionamiento en la consola de JS. No afecta al programa. 
 
-                    $('#modal_editar_docente').modal('show'); //Luego de todo lo anterior, me muestra (show) el modal cuyo id (#) es modal_editar_docente
-                    $('#modal_editar_docente_guardar').click (function(e){ //Cuando haga click (click) el id modal_editar_docente_guardar, hacé la siguiente actividad:
+                    obtenerDatosDocente(docente_id); //Envío a la función obtenerDatosDocente con la variable docente_id como parámetro. La función no me retorna nada.
 
-                    e.preventDefault(); //Función que evita a toda costa que haya un reedireccionamiento.
+                    $('#modal_editar_docente').modal("show"); //Mostrame (show) el modal (modal) cuyo id es modal_editar_docente.
 
-                    //Defino las variables que me voy a llevar luego a acc_editar_docente_2do_plano.php. El valor de estas variables son, en un inicio, el valor de lo que me traigo de acc_datos_docente.php con json y lo coloco en cada sección (que tiene su id #) del modal.
-                    var nombre = $('#modal_editar_docente_docente').val(); //Si el valor original del campo nombre de la tabla docente es "Emmanuel Di Benedetto", a la variable nombre se le asignará "Emmanuel Di Benedetto". Es para que el usuario vea cuál es el valor original del campo. Y asó con contraseña y rol_id. //le asigno todas los valores queme traje con json a las siguientes variables que creo.
-                    var contraseña = $('#modal_editar_docente_pass').val();
-                    var rol_id = $('#modal_editar_docente_rol').val();
+                });
 
-                    $.get('../acc/acc_editar_docente_2do_plano.php',
-                            {docente_id : docente_id,                                 
-                                contraseña : contraseña,
-                                nombre : nombre,
-                                rol_id : rol_id},  //Llevo todas las variables editadas en el modal cuyo id  es  modal_editar_usuario_... al archivo acc_editar_docente_2do_plano.php. Obviamente, se envían con el método GET.
-                                
-                                function(data){
+                $("#modal_editar_docente_guardar").click(function(e){ //Cuando haga click (click) en el elemento cuyo id (#) es modal_editar_docente_guardar, haceme la siguiente función o actividad (function).
 
-                                },
+                    e.preventDefault(); //Método de JS que evita a toda costa que haya un reedireccionamiento de página. Es por las dudas. Así, por más que en un archivo haya un href, gracias a este método no habrá reedireccionamiento.
 
-                        "json")//get
+                    var docente_id = $("#modal_editar_docente_id").val(); //Este fragmento de código recupera el ID de un elemento con el id modal_editar_docente_id. Cuando recuperé los datos del docente en acc_datos_docente.php almacené el id en este form para recuperarlo en este momento y que el programa sepa a qué docente editar. 
 
-                    $('#modal_editar_docente').modal("hide");
+                    var nombre = $("#modal_editar_docente_docente").val(); //A la variable nombre le asigno el valor que se halla en el elemento cuyo id es modal_editar_docente_docente. Y así con cada uno. 
+
+                    var contraseña = $("#modal_editar_docente_pass").val();
+
+                    var rol_id = $("#modal_editar_docente_rol").val();
+            /*
+                    console.log(nombre); 
+                    console.log(contraseña);
+                    console.log(rol_id);
+            */
+                    actualizarDatosDocente(docente_id, nombre, contraseña, rol_id); //Le envío a la función actualizarDatosDocente cuatro variables como parámetro. No me retorna nada.
+
+                    $('#modal_editar_docente').modal("hide"); //Finalmente, el programa oculta (hide) el modal(modal) cuyo id(#) es modal_editar_docente.
+
+                });
+
+            });
+
+
+            })
+
+            function obtenerDatosDocente(docente_id) { //En esta función obtengo todos los datos del docente cuyo ID es igual a docente_id. Esos datos aparecerán en el modal editar para que el usuario vea cuáles son los valores que eligió en un principio.
+
+                $.get("../acc/acc_datos_docente.php", {docente_id: docente_id}, function(data){//Va en segundo plano al archivo acc_datos_docente.php. De allí obtiene los datos del docente y los almacena en la variable data.
+                // console.log(data);
+
+                    $("#modal_editar_docente_id").val(data.docente_id); //En el form cuya id es modal_editar_docente_id le asigno el valor que almacené en la variable docente_id que me traje como parámetro. De esta manera, al hacer click en guardar se enviará a acc_editar_docente_segundoplano.php la variable guardada en este id y el programa sabrá a qué docente editar.
+
+                    $("#modal_editar_docente_docente").val(data.nombre); //En el id (#) modal_editar_docente_docente aparecerá como valor (val) el valor de data.nombre. Así, el usuario sabrá cuál es el valor original de nombre. Lo mismo con los otros datos.
+
+                    $("#modal_editar_docente_pass").val(data.contraseña); //Acá, finalmente, traigo el valor de contraseña y lo asigno al elemento del modal cuyo id es modal_editar_docente_pass. 
+
+                    $("#modal_editar_docente_rol option[value='"+data.rol_id+"']").prop("selected", true);
+
+                }, "json");
+
+            }
+
+            function actualizarDatosDocente(docente_id, nombre, contraseña, rol_id) {  
+
+                $.get("../acc/acc_editar_docente_segundoplano.php", {
+
+                    docente_id: docente_id,
+
+                    contraseña: contraseña,
+
+                    nombre: nombre,
+
+                    rol_id: rol_id
                     
-                    }) //click modal_editar_docente_guardar
+                }, function(data){
 
-                })//click boton_editar_docente
+                // console.log(docente_id);
+                }, "json");
 
-            });//function
+            }
 
         </script>
 
-</body>
+    </body>
 </html>

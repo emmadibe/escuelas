@@ -220,20 +220,20 @@
 
                                                     echo"<h3 style='color:red'>";
 
-                                                    }else if($fila_columna["nota_".$fila_columna["columna_".($desde + 1).""].""] >= 4 AND $fila_columna["nota_".$fila_columna["columna_".($desde + 1).""].""] < 7){ //Si la nota esmayor a 4 y menor a 7, va a estar de color amarillo.
+                                                }else if($fila_columna["nota_".$fila_columna["columna_".($desde + 1).""].""] >= 4 AND $fila_columna["nota_".$fila_columna["columna_".($desde + 1).""].""] < 7){ //Si la nota esmayor a 4 y menor a 7, va a estar de color amarillo.
 
-                                                        echo"<h3 style='color:yellow'>";
+                                                    echo"<h3 style='color:yellow'>";
 
-                                                        }else{//Solo queda una opción: que la nota sea mayor a 7. Ahí, estará de color verde.
+                                                }else{//Solo queda una opción: que la nota sea mayor a 7. Ahí, estará de color verde.
 
-                                                            echo"<h3 style='color:green'>";
+                                                    echo"<h3 style='color:green'>";
 
-                                                        }
+                                                }
 
-                                                               echo $fila_columna["nota_".$fila_columna["columna_".($desde + 1).""].""].
-                                                                //Imprimo la nota en pantalla. Recordá que en la tabla "alumnos" de mi base de datos escuela cree 10 campos llamados nota_1, nota_2 y así hasta llegar a nota_10. Como el número de nota se va a corresponder al número de columna, para saber qué nota es (si nota_1, nota_2, etc) saco el valor del campo columna. Para eso, debo hacer columna_". ($desde + 1) ya que la suma de 1 con $desde me arroja el número de columna.
+                                                    echo $fila_columna["nota_".$fila_columna["columna_".($desde + 1).""].""].
+                                                    //Imprimo la nota en pantalla. Recordá que en la tabla "alumnos" de mi base de datos escuela cree 10 campos llamados nota_1, nota_2 y así hasta llegar a nota_10. Como el número de nota se va a corresponder al número de columna, para saber qué nota es (si nota_1, nota_2, etc) saco el valor del campo columna. Para eso, debo hacer columna_". ($desde + 1) ya que la suma de 1 con $desde me arroja el número de columna.
 
-                                                        "</h3>";
+                                                    "</h3>";
                                                     
 
                                             }
