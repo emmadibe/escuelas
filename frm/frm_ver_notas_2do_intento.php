@@ -1,24 +1,33 @@
+<?php
+
+    session_start();
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
 <?php
-    
-    SESSION_START();
     
     include "../alertas.php";
     include "../conexion.php";
     include "../barra.php";
     
     $docente_id = $_SESSION["docente_id"];
- 
     $curso = $_GET["curso"];
+    
 
-    $sql = "SELECT * FROM cursos WHERE curso='".$curso."'";
-    $res = mysqli_query($link, $sql);
-    $mostrar = mysqli_fetch_array($res);
+    $sql_curso = "SELECT * FROM cursos WHERE curso='".$curso."' && docente_id = ".$docente_id;
+    $res_curso = mysqli_query($link, $sql_curso);
+    
+    if (!$res_curso) {
+        echo "Error executing the query: " . mysqli_error($link);
+        exit;
+    }
+    
+    $mostrar = mysqli_fetch_array($res_curso);
     $alto = $mostrar["cant_alumnos"];
-
-    $curso_id = $_GET["curso_id"];
+    $curso_id = $mostrar["curso_id"];
 
    
 
@@ -178,42 +187,39 @@
 
                                 <?php
 
-                                    $sql_notas = "SELECT * FROM alumnos WHERE curso ='".$curso."'";
+                                    $sql_notas = "SELECT * FROM alumnos WHERE curso ='".$curso."' && docente_id = ".$docente_id;
                                     $res_notas = mysqli_query($link, $sql_notas);
                                     $muestrate_1 = mysqli_fetch_array($res_notas);
 
                                  
 
-                                        while ($fila_2 = mysqli_fetch_array($res_notas)){
+                                    while ($fila_2 = mysqli_fetch_array($res_notas)) {
 
-                                            if(($fila_2["numero"] == $i + 1 ) && ($muestrate_1["curso_id"] == $curso_id)){
+                                        if (($fila_2["numero"] == $i + 1) && ($fila_2["curso_id"] == $curso_id)) {
+                                      
+                                            $mostrar_deserializado = unserialize($fila_2['nota_array']);
 
-                                            // $notas_en_crudo = array (serialize($fila_2["nota_array"]));
-
-                                                $serializar = serialize($fila_2["nota_array"]);
-
-                                                $Notas_serializado[] = array ($serializar);
-                                                
+                                       //     for($g = 0; $g < count($mostrar_deserializado); $g++){
 
                                                 echo '<pre>';
 
-                                                    print_r($Notas_serializado);
+                                                    print_r($mostrar_deserializado);
 
                                                 echo '</pre>';
-                                                
-                                                //echo implode(', ', $Notas_deserializado); 
 
-                                                /*
-                                                echo '<pre>';
-
-                                                    print_r($notas_deserializadas_again);
-
-                                                echo '</pre>';
-                                                */
-
-                                            }
-
+                                         //   }
+                                      
+                                            /*      
+                                            $serializar = serialize($fila_2["nota_array"]);
+                                            $Notas_serializado[] = $serializar;
+                                    
+                                            echo '<pre>';
+                                            print_r(unserialize($serializar));
+                                            echo '</pre>';
+                                    */    
                                         }
+
+                                    }
 
                                     
                                     

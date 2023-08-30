@@ -14,13 +14,14 @@ mysqli_stmt_execute($stmt);
 $res = mysqli_stmt_get_result($stmt);
 $mostrar = mysqli_fetch_assoc($res);
 
+/*
 // Get the profile picture path from the database
 $sql_foto = "SELECT foto_perfil FROM docentes WHERE docente_id = ?";
 $stmt = mysqli_prepare($link, $sql_foto);
 mysqli_stmt_bind_param($stmt, "i", $docente_id);
 mysqli_stmt_execute($stmt);
 mysqli_stmt_bind_result($stmt, $foto);
-
+*/
 ?>
   
 
