@@ -195,33 +195,36 @@
 
                                     while ($fila_2 = mysqli_fetch_array($res_notas)) {
 
+                                        $o = 0;
+
                                         if (($fila_2["numero"] == $i + 1) AND ($fila_2["curso_id"] == $curso_id)) {
-                                      /*
+                                
                                             if ($fila_2['nota_array'] == NULL){
                                                 // Si está vacío, no hay notas para imprimir
                                                 echo "No hay notas para imprimir.";
+
                                             }else{
-                                                
-                                            }
-                                       */           
-                                                    $mostrar_deserializado = unserialize($fila_2['nota_array']);
-
-                                                //    $desanidado = array_merge($mostrar_deserializado);
-
-                                                //   echo "<pre>";
-
+                                            
+                                                $mostrar_deserializado = unserialize($fila_2['nota_array']);
                                                         // Si el campo nota_array tiene valores, obtenerlos y mostrarlos en pantalla
                                                 $mostrar_deserializado = unserialize($fila_2['nota_array']);
-                                                foreach ($mostrar_deserializado as $nota) {
-                                                    echo $nota . ", ";
-                                                }
-                                                  //  echo "</pre>";
 
+                                                foreach ($mostrar_deserializado as $nota) {
+
+                                                    echo 'TP Nº'. $o. '<br>';
+
+                                                    echo $nota . ", <br>";
+
+                                                    $o++;
+
+                                                }
+
+                                            }
+                                            
                                         }
 
                                     }
 
-                                    
                                     
                                 // }
 
