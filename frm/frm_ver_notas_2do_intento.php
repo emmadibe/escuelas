@@ -195,28 +195,29 @@
 
                                     while ($fila_2 = mysqli_fetch_array($res_notas)) {
 
-                                        if (($fila_2["numero"] == $i + 1) && ($fila_2["curso_id"] == $curso_id)) {
-                                      
-                                            $mostrar_deserializado = unserialize($fila_2['nota_array']);
+                                        if (($fila_2["numero"] == $i + 1) AND ($fila_2["curso_id"] == $curso_id)) {
+                                      /*
+                                            if ($fila_2['nota_array'] == NULL){
+                                                // Si está vacío, no hay notas para imprimir
+                                                echo "No hay notas para imprimir.";
+                                            }else{
+                                                // Si el campo nota_array tiene valores, obtenerlos y mostrarlos en pantalla
+                                                $mostrar_deserializado = unserialize($fila_2['nota_array']);
+                                                foreach ($mostrar_deserializado as $nota) {
+                                                    echo $nota . "<br>";
+                                                }
+                                            }
+                                       */           
+                                                    $mostrar_deserializado = unserialize($fila_2['nota_array']);
 
-                                       //     for($g = 0; $g < count($mostrar_deserializado); $g++){
+                                                //    $desanidado = array_merge($mostrar_deserializado);
 
-                                                echo '<pre>';
+                                                    echo "<pre>";
 
-                                                    print_r($mostrar_deserializado);
+                                                        print_r($mostrar_deserializado);
 
-                                                echo '</pre>';
+                                                    echo "</pre>";
 
-                                         //   }
-                                      
-                                            /*      
-                                            $serializar = serialize($fila_2["nota_array"]);
-                                            $Notas_serializado[] = $serializar;
-                                    
-                                            echo '<pre>';
-                                            print_r(unserialize($serializar));
-                                            echo '</pre>';
-                                    */    
                                         }
 
                                     }

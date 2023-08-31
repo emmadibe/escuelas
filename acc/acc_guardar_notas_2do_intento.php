@@ -71,11 +71,19 @@
                     
             }else{ //En cambio, si el campo nota_array ya tenía un valor lo que debo hacer es seguir agregándole valores.
 
-                    $mostrar_deserializado = unserialize($mostrar_traer['nota_array']); //Me traigo, primero, los valores que ya tengo en el campo nota_array deserializado. Eso es necesario para poder agregarle valores.
+                    $mostrar_deserializado = unserialize($mostrar_traer['nota_array']);
 
-                    $Notas_agregadas[] = array($mostrar_deserializado, $nota); //Inicializo otro array llamado $Notas_agregadas a la cual le voy a poner los valores de $mostrar_deserializado (tiene los valores que el campo nota_array ya tenía) y de $nota.
+                    for($h = 0; $h <= count($mostrar_deserializado); $h++){
 
-                    $Notas_agregadas_serializadas = serialize($Notas_agregadas); //Serializo el array, lo cual es necesario para poder guardar sus valores en mi base de datos.
+                        $mostrar_deserializado2[$h] = $mostrar_deserializado[$h]; //Me traigo, primero, los valores que ya tengo en el campo nota_array deserializado. Eso es necesario para poder agregarle valores.
+
+                    }
+
+                   
+
+                    $mostrar_deserializado2[count($mostrar_deserializado2) + 1] = $nota; //Inicializo otro array llamado $Notas_agregadas a la cual le voy a poner los valores de $mostrar_deserializado (tiene los valores que el campo nota_array ya tenía) y de $nota.
+
+                    $Notas_agregadas_serializadas = serialize($mostrar_deserializado2); //Serializo el array, lo cual es necesario para poder guardar sus valores en mi base de datos.
 
                     $sql_act = "UPDATE alumnos SET nota_array='".$Notas_agregadas_serializadas."'
                                                     WHERE numero=".$fila." && curso_id=".$curso_id.""; //Ahora sí: actualizo mi field nota_array.
