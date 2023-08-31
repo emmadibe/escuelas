@@ -201,22 +201,21 @@
                                                 // Si está vacío, no hay notas para imprimir
                                                 echo "No hay notas para imprimir.";
                                             }else{
-                                                // Si el campo nota_array tiene valores, obtenerlos y mostrarlos en pantalla
-                                                $mostrar_deserializado = unserialize($fila_2['nota_array']);
-                                                foreach ($mostrar_deserializado as $nota) {
-                                                    echo $nota . "<br>";
-                                                }
+                                                
                                             }
                                        */           
                                                     $mostrar_deserializado = unserialize($fila_2['nota_array']);
 
                                                 //    $desanidado = array_merge($mostrar_deserializado);
 
-                                                    echo "<pre>";
+                                                //   echo "<pre>";
 
-                                                        print_r($mostrar_deserializado);
-
-                                                    echo "</pre>";
+                                                        // Si el campo nota_array tiene valores, obtenerlos y mostrarlos en pantalla
+                                                $mostrar_deserializado = unserialize($fila_2['nota_array']);
+                                                foreach ($mostrar_deserializado as $nota) {
+                                                    echo $nota . ", ";
+                                                }
+                                                  //  echo "</pre>";
 
                                         }
 

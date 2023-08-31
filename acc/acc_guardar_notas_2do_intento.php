@@ -71,32 +71,20 @@
                     
             }else{ //En cambio, si el campo nota_array ya tenía un valor lo que debo hacer es seguir agregándole valores.
 
-                    $mostrar_deserializado = unserialize($mostrar_traer['nota_array']);
+                    $mostrar_deserial = unserialize($mostrar_traer['nota_array']); //Primero, me traigo los datos almacenados en un array y guardados en el campo 'nota_array' de la tabla alumnos. Esos datos debo deserializarlos con la función unserialize. Debo deserializarlos sí o sí para poder seguir agregándole valores al array. 
 
-                    for($h = 0; $h <= count($mostrar_deserializado); $h++){
+                    for($h = 0; $h <= count($mostrar_deserial); $h++){ //Con un bucle, le voy pasando los valores del array mostrar_deserial a $mostrar_deserializado2. Obviamente, el bucle se detiene cuando llegamos al final del array. Gracias a la función count() sé cuál es la longitud del array; pues, count es una función que me retorna un int que indica la longitud del array. 
 
-                        $mostrar_deserializado2[$h] = $mostrar_deserializado[$h]; //Me traigo, primero, los valores que ya tengo en el campo nota_array deserializado. Eso es necesario para poder agregarle valores.
+                        $mostrar_deserializado2[$h] = $mostrar_deserial[$h]; //Me traigo, primero, los valores que ya tengo en el campo nota_array deserializado. Eso es necesario para poder agregarle valores.
 
                     }
 
-                   
-
-                    $mostrar_deserializado2[count($mostrar_deserializado2) + 1] = $nota; //Inicializo otro array llamado $Notas_agregadas a la cual le voy a poner los valores de $mostrar_deserializado (tiene los valores que el campo nota_array ya tenía) y de $nota.
-
+                    $mostrar_deserializado2[count($mostrar_deserializado2) - 1] = $nota; //Ahora, solo debo agregar el nuevo dato. Debo agregarlo, obviamente, en el elemento que le sigue al último dato almacenado. Sé que el último dato almacenado coincidirá con la longitud del array. 
                     $Notas_agregadas_serializadas = serialize($mostrar_deserializado2); //Serializo el array, lo cual es necesario para poder guardar sus valores en mi base de datos.
 
                     $sql_act = "UPDATE alumnos SET nota_array='".$Notas_agregadas_serializadas."'
                                                     WHERE numero=".$fila." && curso_id=".$curso_id.""; //Ahora sí: actualizo mi field nota_array.
                     $res_act = mysqli_query($link, $sql_act);
-
-                    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                    // Mostremos el elemento del array en pantalla:
-                                    //$sql_mostrar1 = "SELECT * FROM alumnos WHERE numero = ".$fila;
-                                    //$res_mostrar1 = mysqli_query($link, $sql_mostrar1);
-                                    //$muestrate_mostrar1 = mysqli_fetch_array($res_mostrar1);
-                                // $Notas_deserializado = unserialize($muestrate_mostrar1['nota_array']);
-                                    // echo implode(', ', $Notas_deserializado); //Así, si la nota es 3, se verá un 3 en pantalla.
-                    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                     if($res_act){
 
