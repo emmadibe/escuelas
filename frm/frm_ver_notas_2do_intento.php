@@ -118,7 +118,7 @@
                         
                         <?php $r = $i + 1; ?>
 
-                        <td scope="col" style="background: yellow" id="<?php echo ($r) ?>"> 
+                        <td scope="col" style="background: yellow; width: 150px" id="<?php echo ($r) ?>"> 
 
                             <?php echo $f = $i + 1 ?>
 
@@ -170,7 +170,7 @@
                             </td>  
                         
 
-                            <td scope="col" style="background: pink" id="<?php echo $desde + 1 ?>">
+                            <td scope="col" style="background: pink; width: 150px" id="<?php echo $desde + 1 ?>">
                     
                                 <form method="POST" action="../acc/acc_guardar_notas_2do_intento.php?curso=<?php echo $curso ?>&fila=<?php echo ($i + 1) ?>&curso_id=<?php echo $curso_id?>">
 
@@ -195,7 +195,7 @@
 
                                     while ($fila_2 = mysqli_fetch_array($res_notas)) {
 
-                                        $o = 0;
+                                        $o = 1;
 
                                         if (($fila_2["numero"] == $i + 1) AND ($fila_2["curso_id"] == $curso_id)) {
                                 
@@ -211,11 +211,27 @@
 
                                                 foreach ($mostrar_deserializado as $nota) {
 
-                                                    echo 'TP Nº'. $o. '<br>';
+                                                    echo '<span style="color: pink">TP Nº'. $o. '</span>'; //$o representa el número de tp. 
 
-                                                    echo $nota . ", <br>";
 
-                                                    $o++;
+                                                    $o++; //Por cada ciclo del bucle, $o aumenta su valor en 1. 
+
+                                                }
+
+                                                echo '<br>';
+
+                                                foreach ($mostrar_deserializado as $nota){
+
+                                                    echo '<span style="color:';
+                                                    if($nota >= 7){  //Depende el valor de nota, se imprimirá el número de color rojo, amarillo o verde.
+                                                        echo 'green';
+                                                    }else if($nota >=4 && $nota <7){
+                                                        echo 'yellow';
+                                                    }else{
+                                                        echo 'red';
+                                                    }                         
+                                
+                                                    echo '">' .$nota . '</span>';
 
                                                 }
 
@@ -231,6 +247,7 @@
                                 ?>
 
                             </td>
+                            
 
                     <?php
                             
