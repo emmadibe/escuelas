@@ -68,6 +68,12 @@
 
 </head>
 
+<!--/////////////////////FUNCIONES:  -->
+
+
+
+<!-- ///////////////////////////////////// -->
+
 <body>
 
    
@@ -99,6 +105,42 @@
                     </th>
                     <!-- El valor del atributo COLSPAN indica cuántas columnas adyacentes deben ser fusionadas en una sola celda, Sirve mucho para hacer encabezados.
                 En cambio, el atributo ROWSPAN es utilizado en tablas para fusionar o unir celdas adyacentes en una misma columna. -->
+
+                    <?php
+                        //Imprimamos una columna por cada tp. 
+                        for($o = 1; $o < $mostrar["cant_notas"]; $o++){ //Creo un bucle en donde me genere tantas columnas nuevas en el cabezal (thead) hasta que el valor de $o llegue al de $cant_notas. O sea, la idea es tener una columna por cada nota.
+
+                    ?>
+
+                            <th>
+
+                                <?php
+                                        
+                                    echo '<span style="color: pink">TP Nº'. $o. '</span>'; //$o representa el número de tp. 
+                                    
+                                    echo '<br>';
+
+                                ?>
+
+                            </th>
+
+                    <?php
+
+                        }
+
+                    ?>
+
+                    <th scope="col" style="color: black; background: gray">
+
+                        Promedios
+
+                    </th>
+
+                    <th scope="col" style="color: red; background: black">
+
+                        Nota Conceptual
+
+                    </th>
 
                 </tr>
 
@@ -163,7 +205,7 @@
                                     }
 //Gracias a este while y estos if, en cada celda me pondrá el nombre del alumno cuyo campo numero es igual al id de la celda (variable i + 2). Si no hiciera esto, aparecerían los nombres en todas las celdas. 
                                    
-                                }
+                                
 
                             ?>
 
@@ -183,79 +225,181 @@
 
                             </td>
 
-                            <td>
+                            <?php
+                                /////////////////////IMPRIMAMOS LAS NOTAS EN PANTALLA/////////////////////////////////////////////////////////////////////
+                                for($x = 1; $x < $mostrar["cant_notas"]; $x++){
 
+                                    ?>
+
+                                        <td>
+
+                                    <?php
+
+                                            $sql_notas_3 = "SELECT * FROM alumnos WHERE curso ='".$curso."' && docente_id = ".$docente_id;
+                                            $res_notas_3 = mysqli_query($link, $sql_notas_3);
+                                            $muestrate_3 = mysqli_fetch_array($res_notas_3);
+
+                                            while ($fila_3 = mysqli_fetch_array($res_notas_3)) { //Mientras que haya información en $res_notas_3, me ejecuta el bucle.
+    
+                                                if (($fila_3["numero"] == $i + 1) AND ($fila_3["curso_id"] == $curso_id)) { //Compruebo que el número del alumno sea el mismo que el de la fila; así, se imprime la nota en la celda, en el alumno que corresponde.
+                                        
+                                                    if ($fila_3['nota_array'] == NULL){
+                                                        // Si está vacío, no hay notas para imprimir
+                                                        echo "No hay notas para imprimir.";
+        
+                                                    }else{
+                                                        // Si el campo nota_array tiene valores, obtenerlos y mostrarlos en pantalla
+                                                        $mostrar_deserializado = unserialize($fila_3['nota_array']); //Debo deserializar el array antes que nada.
+        
+                                                        if(!isset($mostrar_deserializado[$x - 1])){ //Si no hago esta validación, y $mostrar_deserializado[$x - 1] no existe, me va a tirar un error re feo en la página.
+
+                                                            echo'<h6 style="color:red">Sin entregar</h6>';
+
+                                                        }else{ 
+                                                            
+                                                            $nota = $mostrar_deserializado[$x-1]; // Acceder al elemento en el índice $x-1. Así, imprimo un elemento del array en cada columna de notas.
+
+                                                            echo '<span style="color:'; //Depende del valor de la variable $nota el color que tenga.
+
+                                                            if($nota >= 7){
+
+                                                                echo 'green';
+
+                                                            }else if($nota >=4 && $nota <7){
+
+                                                                echo 'yellow';
+
+                                                                
+                                                            }else{
+
+                                                                echo 'red';
+
+                                                            }                         
+
+                                                            echo '">' .$nota. '</span>';
+            
+                                                        }
+
+                                                        
+        
+                                                    }
+                                                    
+                                                }
+    
+                                            }//while
+    
+                                        
+                                }//for
+                                                    
+                                                    
+                                            ?>
+
+                                        </td>
+
+                                    <?php
+
+                                }                         
+                                ///////////////////////////////////FIN DE IMPRIMIR LAS NOTAS EN PANTALLA///////////////////////////////////////////////////////
+                            ?>
+                            
+                            <td style="color : black; background: gray">
                                 <?php
 
-                                    $sql_notas = "SELECT * FROM alumnos WHERE curso ='".$curso."' && docente_id = ".$docente_id;
-                                    $res_notas = mysqli_query($link, $sql_notas);
-                                    $muestrate_1 = mysqli_fetch_array($res_notas);
+                                    $sql_notas_4 = "SELECT * FROM alumnos WHERE curso ='".$curso."' && docente_id = ".$docente_id;
+                                    $res_notas_4 = mysqli_query($link, $sql_notas_4);
+                                    $muestrate_4 = mysqli_fetch_array($res_notas_4);
 
-                                 
+                                    while ($fila_4 = mysqli_fetch_array($res_notas_4)) { 
 
-                                    while ($fila_2 = mysqli_fetch_array($res_notas)) {
+                                        $suma = 0;
 
-                                        $o = 1;
+                                        if (($fila_4["numero"] == $i + 1) AND ($fila_4["curso_id"] == $curso_id)) {
 
-                                        if (($fila_2["numero"] == $i + 1) AND ($fila_2["curso_id"] == $curso_id)) {
-                                
-                                            if ($fila_2['nota_array'] == NULL){
-                                                // Si está vacío, no hay notas para imprimir
-                                                echo "No hay notas para imprimir.";
+                                            for($y= 0; $y <= $mostrar["cant_notas"]; $y++){
 
-                                            }else{
-                                            
-                                                $mostrar_deserializado = unserialize($fila_2['nota_array']);
-                                                        // Si el campo nota_array tiene valores, obtenerlos y mostrarlos en pantalla
-                                                $mostrar_deserializado = unserialize($fila_2['nota_array']);
+                                                $mostrar_deserializado = unserialize($fila_4['nota_array']);
 
-                                                foreach ($mostrar_deserializado as $nota) {
+                                                if(!isset($mostrar_deserializado[$y])){ //Si no existe el índice $y del array $mostrar_deserializado hago que a la variable $suma se le sume 0. Si no hago esta validación, y dicho índice no existe, me va a saltar un error.
 
-                                                    echo '<span style="color: pink">TP Nº'. $o. '</span>'; //$o representa el número de tp. 
+                                                    $suma+= 0;
 
+                                                }else{
 
-                                                    $o++; //Por cada ciclo del bucle, $o aumenta su valor en 1. 
-
-                                                }
-
-                                                echo '<br>';
-
-                                                foreach ($mostrar_deserializado as $nota){
-
-                                                    echo '<span style="color:';
-                                                    if($nota >= 7){  //Depende el valor de nota, se imprimirá el número de color rojo, amarillo o verde.
-                                                        echo 'green';
-                                                    }else if($nota >=4 && $nota <7){
-                                                        echo 'yellow';
-                                                    }else{
-                                                        echo 'red';
-                                                    }                         
-                                
-                                                    echo '">' .$nota . '</span>';
+                                                    $suma += $mostrar_deserializado[$y];
 
                                                 }
 
                                             }
-                                            
+
+                                            $resultado = $suma / $mostrar["cant_notas"]; //En la variable $resultado se almacenará un float con el cociente de $suma y $mostrar["cant_notas"].
+                                            $resultado_formateado = number_format($resultado, 2); // Limita a 2 decimales. number_format() es una función que recibe dos parámetros. El primer parámetro es un dato de tipo float, el cual queremos limitar sus decimales; el segundo, es un int con la cantidad de decimales que deseo tener.
+
+                                            echo $resultado_formateado;
+
                                         }
 
                                     }
 
-                                    
-                                // }
-
                                 ?>
+                            </td>
+
+                            <td style="color : red; background: black">
+                                
+                                    <?php
+
+                                        $sql_notas_5 = "SELECT * FROM alumnos WHERE curso ='".$curso."' && docente_id = ".$docente_id;
+                                        $res_notas_5 = mysqli_query($link, $sql_notas_5);
+                                        $muestrate_5 = mysqli_fetch_array($res_notas_5);
+
+
+                                        while ($fila_4 = mysqli_fetch_array($res_notas_5)) { 
+
+                                            $suma = 0;
+
+                                            if (($fila_4["numero"] == $i + 1) AND ($fila_4["curso_id"] == $curso_id)) {
+
+                                                for($y= 0; $y <= $mostrar["cant_notas"]; $y++){
+
+                                                    $mostrar_deserializado = unserialize($fila_4['nota_array']);
+
+                                                    if(!isset($mostrar_deserializado[$y])){ //Si no existe el índice $y del array $mostrar_deserializado hago que a la variable $suma se le sume 1. Si no hago esta validación, y dicho índice no existe, me va a saltar un error.
+                                                                                        //En la escuela no se puede poner 1.
+                                                        $suma+= 1;
+
+                                                    }else{
+
+                                                        $suma += $mostrar_deserializado[$y];
+
+                                                    }
+
+                                                }
+
+                                                if( ($suma / $mostrar["cant_notas"]) >= 7 ){
+
+                                                    echo '<h3 style="color:green">TEA</h3>';
+
+                                                }else if(($suma / $mostrar["cant_notas"]) < 7 && ($suma / $mostrar["cant_notas"]) >= 4){
+
+                                                    echo '<h3 style="color:yellow">TEP</h3>';
+
+                                                }else{
+
+                                                    echo'<h3 style="color:red">TED</h3>';
+
+                                                }
+
+                                            }
+
+                                    }
+
+                                    ?>
 
                             </td>
-                            
 
                     <?php
-                            
-                        }//Cierro bucle for
+                            } //Find el bucle for general.
 
                     ?>
-
-
 
                 </tr>     
                 
