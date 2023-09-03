@@ -15,21 +15,7 @@
     
     $docente_id = $_SESSION["docente_id"];
     $curso = $_GET["curso"];
-    
 
-    $sql_curso = "SELECT * FROM cursos WHERE curso='".$curso."' && docente_id = ".$docente_id;
-    $res_curso = mysqli_query($link, $sql_curso);
-    
-    if (!$res_curso) {
-        echo "Error executing the query: " . mysqli_error($link);
-        exit;
-    }
-    
-    $mostrar = mysqli_fetch_array($res_curso);
-    $alto = $mostrar["cant_alumnos"];
-    $curso_id = $mostrar["curso_id"];
-
-   
 
 ?>
 
@@ -60,7 +46,7 @@
 
         body{
 
-            background: <?php echo $mostrar["color_fondo"] ?>
+            background: <?php echo $mostrar_curso["color_fondo"] ?>
 
         }
 
@@ -76,12 +62,11 @@
 
 <body>
 
-   
     <div class="conteiner text-center">
-
+        
         <div class="row">
-
-            <div class="col-12 bg-success text-light"><h1>Curso <?php echo $mostrar["curso"] ?> de la <?php echo $mostrar["colegio"] ?> </h1></div>
+           <?php include "../conexion.php"; ?>
+            <div class="col-12 bg-success text-light"> <h1>Curso <?php  echo $mostrar_curso["curso"] ?> de la <?php echo $mostrar_curso["colegio"] ?> </h1></div>
             <!-- Con el atributo bg- modifico el color del fondo; con text, el del texto. Todo usando Boostrap. -->
         </div>
 
@@ -108,7 +93,9 @@
 
                     <?php
                         //Imprimamos una columna por cada tp. 
-                        for($o = 1; $o < $mostrar["cant_notas"]; $o++){ //Creo un bucle en donde me genere tantas columnas nuevas en el cabezal (thead) hasta que el valor de $o llegue al de $cant_notas. O sea, la idea es tener una columna por cada nota.
+                        
+    include "../conexion.php"; 
+                        for($o = 1; $o < $mostrar_curso["cant_notas"]; $o++){ //Creo un bucle en donde me genere tantas columnas nuevas en el cabezal (thead) hasta que el valor de $o llegue al de $cant_notas. O sea, la idea es tener una columna por cada nota.
 
                     ?>
 
@@ -192,13 +179,9 @@
 
                                     $numero = $_GET["numero"];
 
-                                    $sql_numero = "SELECT * FROM alumnos WHERE curso ='".$curso."' AND docente_id = ".$docente_id;
-                                    //Me traigo todos los campos de la tabla alumnos en donde el campo curso sea igual a la variable curso. Eso es para traerme los datos de los alumnos del curso que me interesa. 
-                                    $res_numero = mysqli_query($link, $sql_numero);
-                                    $mostrar_numero = mysqli_fetch_array($res_numero);
-                                    
+                                    include "../conexion.php";
 
-                                    while ($fila = mysqli_fetch_array($res_numero)){
+                                    while ($fila = mysqli_fetch_array($res_notas)){
                                         if ($fila["numero"] == $i + 1){ //Lo hago para que coincida con el id de la celda. Así, solo se pondrá el nombre en la celda cuyo id coincide con el numero del alumno. 
                                             echo '<h4 style="color:red">'.ucfirst($fila["nombre"]).'</h4><br>';
                                         }
@@ -227,7 +210,7 @@
 
                             <?php
                                 /////////////////////IMPRIMAMOS LAS NOTAS EN PANTALLA/////////////////////////////////////////////////////////////////////
-                                for($x = 1; $x < $mostrar["cant_notas"]; $x++){
+                                for($x = 1; $x < $mostrar_curso["cant_notas"]; $x++){
 
                                     ?>
 
@@ -235,14 +218,11 @@
 
                                     <?php
 
-                                            $sql_notas_3 = "SELECT * FROM alumnos WHERE curso ='".$curso."' && docente_id = ".$docente_id;
-                                            $res_notas_3 = mysqli_query($link, $sql_notas_3);
-                                            $muestrate_3 = mysqli_fetch_array($res_notas_3);
+                                            include "../conexion.php";
 
-                                            while ($fila_3 = mysqli_fetch_array($res_notas_3)) { //Mientras que haya información en $res_notas_3, me ejecuta el bucle.
-    
-                                                if (($fila_3["numero"] == $i + 1) AND ($fila_3["curso_id"] == $curso_id)) { //Compruebo que el número del alumno sea el mismo que el de la fila; así, se imprime la nota en la celda, en el alumno que corresponde.
-                                        
+                                            while ($fila_3 = mysqli_fetch_array($res_notas)) { //Mientras que haya información en $res_notas_3, me ejecuta el bucle.
+                                                    if (($fila_3["numero"] == $i + 1) AND ($fila_3["curso_id"] == $curso_id)) { //Compruebo que el número del alumno sea el mismo que el de la fila; así, se imprime la nota en la celda, en el alumno que corresponde.
+
                                                     if ($fila_3['nota_array'] == NULL){
                                                         // Si está vacío, no hay notas para imprimir
                                                         echo "No hay notas para imprimir.";
@@ -305,17 +285,15 @@
                             <td style="color : black; background: gray">
                                 <?php
 
-                                    $sql_notas_4 = "SELECT * FROM alumnos WHERE curso ='".$curso."' && docente_id = ".$docente_id;
-                                    $res_notas_4 = mysqli_query($link, $sql_notas_4);
-                                    $muestrate_4 = mysqli_fetch_array($res_notas_4);
+                                    include "../conexion.php";
 
-                                    while ($fila_4 = mysqli_fetch_array($res_notas_4)) { 
+                                    while ($fila_4 = mysqli_fetch_array($res_notas)) { 
 
                                         $suma = 0;
 
                                         if (($fila_4["numero"] == $i + 1) AND ($fila_4["curso_id"] == $curso_id)) {
 
-                                            for($y= 0; $y <= $mostrar["cant_notas"]; $y++){
+                                            for($y= 0; $y <= $mostrar_curso["cant_notas"]; $y++){
 
                                                 $mostrar_deserializado = unserialize($fila_4['nota_array']);
 
@@ -331,7 +309,7 @@
 
                                             }
 
-                                            $resultado = $suma / $mostrar["cant_notas"]; //En la variable $resultado se almacenará un float con el cociente de $suma y $mostrar["cant_notas"].
+                                            $resultado = $suma / $mostrar_curso["cant_notas"]; //En la variable $resultado se almacenará un float con el cociente de $suma y $mostrar_curso["cant_notas"].
                                             $resultado_formateado = number_format($resultado, 2); // Limita a 2 decimales. number_format() es una función que recibe dos parámetros. El primer parámetro es un dato de tipo float, el cual queremos limitar sus decimales; el segundo, es un int con la cantidad de decimales que deseo tener.
 
                                             echo $resultado_formateado;
@@ -343,22 +321,19 @@
                                 ?>
                             </td>
 
-                            <td style="color : red; background: black">
+                            <td style="color : red; background: black">   <?php //En esta columa imprimiré la nota conceptual: TTEA; TEP o TED. ?>
                                 
                                     <?php
 
-                                        $sql_notas_5 = "SELECT * FROM alumnos WHERE curso ='".$curso."' && docente_id = ".$docente_id;
-                                        $res_notas_5 = mysqli_query($link, $sql_notas_5);
-                                        $muestrate_5 = mysqli_fetch_array($res_notas_5);
+                                        include "../conexion.php";
 
-
-                                        while ($fila_4 = mysqli_fetch_array($res_notas_5)) { 
+                                        while ($fila_4 = mysqli_fetch_array($res_notas)) { //Tengo que volver a sumar cada nota y la divido por la cantidad total de notas ($mostrar_curso["cant_notas"])
 
                                             $suma = 0;
 
                                             if (($fila_4["numero"] == $i + 1) AND ($fila_4["curso_id"] == $curso_id)) {
 
-                                                for($y= 0; $y <= $mostrar["cant_notas"]; $y++){
+                                                for($y= 0; $y <= $mostrar_curso["cant_notas"]; $y++){
 
                                                     $mostrar_deserializado = unserialize($fila_4['nota_array']);
 
@@ -374,11 +349,11 @@
 
                                                 }
 
-                                                if( ($suma / $mostrar["cant_notas"]) >= 7 ){
+                                                if( ($suma / $mostrar_curso["cant_notas"]) >= 7 ){
 
                                                     echo '<h3 style="color:green">TEA</h3>';
 
-                                                }else if(($suma / $mostrar["cant_notas"]) < 7 && ($suma / $mostrar["cant_notas"]) >= 4){
+                                                }else if(($suma / $mostrar_curso["cant_notas"]) < 7 && ($suma / $mostrar_curso["cant_notas"]) >= 4){
 
                                                     echo '<h3 style="color:yellow">TEP</h3>';
 

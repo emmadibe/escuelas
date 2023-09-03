@@ -73,9 +73,6 @@ mysqli_stmt_bind_result($stmt, $foto);
             </li>
           <?php } ?>
 
-          <li class="nav-item">
-            <a class="nav-link disabled">Disabled</a>
-          </li>
         </ul>
       </div>
     </nav>
