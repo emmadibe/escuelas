@@ -296,6 +296,56 @@
 
             break;
 
+            case "NO_IGUALES";
+
+?>
+
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+
+                    <strong>UPSSS</strong> Las contraseñas no coinciden. <br>
+                    <strong>Lo siento.</strong> Intente nuevamente.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>   
+                    </button>
+
+                </div>
+
+<?php
+
+            break;
+
+            case "BORRADOALUMNO_EXITO";
+
+?>
+            
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+
+                    <strong>BIEN!</strong> El alumno fue borrado con éxito.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+            
+<?
+            
+            break;
+            
+            case "BORRADOALUMNO_FRACASO";
+            
+?>
+            
+                <div class="alert alert-danger" role="alert">
+
+                    No se pudo borrar el alumno!
+
+                </div>
+
+            
+<?php
+            
+            break;
+
         }
 
     }

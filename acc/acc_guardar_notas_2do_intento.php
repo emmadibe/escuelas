@@ -49,7 +49,7 @@
             include "../conexion.php";
 
             //Me traigo el campo nota_array de la tabla alumnos de la base de datos escuelas para poder utilizarlo:
-            $sql_traer = "SELECT nota_array FROM alumnos WHERE numero = ".$fila; //Traeme el campo nota_array de la tabla alumnos en donde el campo numero sea igual al valor de la variable $fila.
+            $sql_traer = "SELECT nota_array FROM alumnos WHERE curso_id = $curso_id && numero = ".$fila; //Traeme el campo nota_array de la tabla alumnos en donde el campo numero sea igual al valor de la variable $fila.
             $res_traer = mysqli_query($link, $sql_traer);
             $mostrar_traer = mysqli_fetch_array($res_traer);
 

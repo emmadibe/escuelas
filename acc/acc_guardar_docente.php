@@ -7,30 +7,39 @@
 
             header("location:../frm/frm_crear_docente.php?INFORMACION=NO_DOCENTE");
 
-        }else{
+    }else{
 
             $usuario = $_POST["usuario"];
             $pass = $_POST["pass"];
+            $pass2 = $_POST["pass2"];
 
-            $sql = "INSERT INTO docentes (nombre,
-                                            contraseña,
-                                            rol_id)
-                                            
-                                        VALUES('".$usuario."',
-                                                '".$pass."',
-                                                2)";
+            if($pass != $pass2){
 
-        //Al rol_id le asigno 2 (usuario común) ya que los administradores (rol_id = 1) suelen crearse desde la base de datos misma.
-
-            $res = mysqli_query($link, $sql);
-            
-            if($res){
-
-                header("location:../index.php?INFORMACION=DOCENTE_EXITO");
+                header("location:../frm/frm_crear_docente.php?INFORMACION=NO_IGUALES");
 
             }else{
 
-                header("location:../frm/frm_crear_docente.php?INFORMACION=DOCENTE_FRACASO");
+                $sql = "INSERT INTO docentes (nombre,
+                                                contraseña,
+                                                rol_id)
+                                                
+                                            VALUES('".$usuario."',
+                                                    '".$pass."',
+                                                    2)";
+
+                //Al rol_id le asigno 2 (usuario común) ya que los administradores (rol_id = 1) suelen crearse desde la base de datos misma.
+
+                $res = mysqli_query($link, $sql);
+                
+                if($res){
+
+                    header("location:../index.php?INFORMACION=DOCENTE_EXITO");
+
+                }else{
+
+                    header("location:../frm/frm_crear_docente.php?INFORMACION=DOCENTE_FRACASO");
+
+                }
 
             }
 

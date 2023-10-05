@@ -74,6 +74,79 @@
 
             <thead>
 
+                <div class = "row">
+
+                    <div class = "col-6">
+
+                            <!-- MODAL EDITAR -->
+                            <div class="modal fade" id="modal_editar_alumno" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content bg-primary"> <?php //Aquí edito el color de fondo del cuerpo del modal ?>
+                                    <div class="modal-header bg-warning"> <?php //Como su nombre lo indica (header = cabeza), aquí eduçito el color de fondo de la cabecera del modal ?>
+                                        <h5 class="modal-title" id="exampleModalLabel" style="color:green">Hola, <?php echo $_SESSION["nombre"]; ?></h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h6 style="color:pink">¿Desea editar el alumno?</h6>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                        <a href="frm_editar_alumno.php?curso_id=<?php echo $mostrar_curso2["curso_id"] ?>&curso=<?php echo $curso?>" class="btn btn-primary"> Editar alumnos</a> <?php //Me llevo el curso y el docente_id para que el programa sepa qué datos editarme ?>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- FIN DE MODAL EDITAR -->
+                            <!-- Botón que me abrirá el modal editar: -->
+                             <button type="button" class="btn btn-warning boton_editar_curso"  id=""data-toggle="modal" data-target="#modal_editar_alumno"><i class="bi bi-pen"></i></button> 
+
+
+                    </div>
+                    
+                    <div class = "col-6">
+
+                          <!-- -------------------------------------MODAL ELIMINAR------------------------------------------------ -->
+
+                          <div class="modal" tabindex="-1" id="modal_eliminar_alumno">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                <div class="modal-header bg-danger">
+                                                    <h5 class="modal-title ">ATENCIÓN, administrador <?php echo $_SESSION["nombre"] ?>!!</h5> 
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Seleccione la fila del alumno a eliminar</p>
+                                                    <div class="modal-body">
+
+                                                        <form method="POST" action="../acc/acc_eliminar_alumno.php?curso=<?php echo $curso ?>&curso_id=<?php echo $curso_id?>">
+                                                            <label for="fila"></label>
+                                                            <input type="text" name="fila" class="form-control" placeholder="Ingresa tu nombre">                                                        
+                                                    
+                                                            <p>Esta accion no se puede revertir.</p>
+                                                        
+                                                           
+                                                            <input type="submit" style="color:black; background:red; font-size: 22px;" name="boton" value="Eliminar">
+                                                        </form>
+
+                                                    </div>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" width="22%">Cancelar</button>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>       <?php //En este modal necesito un input porque el usuario debe seleccionar qué alumno eliminar a través de la fila. Si escriba el 2, se eliminará el alumno correspondiente a la fila 2. ?>
+
+                                          <!-- Botón que abrirá el Modal de eliminar -->
+                                          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_eliminar_alumno" data-whatever="@mdo">Eliminar un alumno</button>
+                                    <!-- /////////////////////////////////// -->
+
+                    </div>
+
+                </div>
+
                 <tr>
                     
                     <th scope="col" style="background: yellow">
@@ -94,7 +167,7 @@
                     <?php
                         //Imprimamos una columna por cada tp. 
                         
-    include "../conexion.php"; 
+                        include "../conexion.php"; 
                         for($o = 1; $o < $mostrar_curso["cant_notas"]; $o++){ //Creo un bucle en donde me genere tantas columnas nuevas en el cabezal (thead) hasta que el valor de $o llegue al de $cant_notas. O sea, la idea es tener una columna por cada nota.
 
                     ?>
@@ -182,7 +255,7 @@
                                     include "../conexion.php";
 
                                     while ($fila = mysqli_fetch_array($res_notas)){
-                                        if ($fila["numero"] == $i + 1){ //Lo hago para que coincida con el id de la celda. Así, solo se pondrá el nombre en la celda cuyo id coincide con el numero del alumno. 
+                                        if ($fila["numero"] == $i + 1 AND $fila["curso_id"] ==$curso_id){ //Lo hago para que coincida con el id de la celda. Así, solo se pondrá el nombre en la celda cuyo id coincide con el numero del alumno. También me aseguro que me traiga los nombres solo de ese curso_id
                                             echo '<h4 style="color:red">'.ucfirst($fila["nombre"]).'</h4><br>';
                                         }
                                     }
@@ -223,48 +296,46 @@
                                             while ($fila_3 = mysqli_fetch_array($res_notas)) { //Mientras que haya información en $res_notas_3, me ejecuta el bucle.
                                                     if (($fila_3["numero"] == $i + 1) AND ($fila_3["curso_id"] == $curso_id)) { //Compruebo que el número del alumno sea el mismo que el de la fila; así, se imprime la nota en la celda, en el alumno que corresponde.
 
-                                                    if ($fila_3['nota_array'] == NULL){
-                                                        // Si está vacío, no hay notas para imprimir
-                                                        echo "No hay notas para imprimir.";
-        
-                                                    }else{
-                                                        // Si el campo nota_array tiene valores, obtenerlos y mostrarlos en pantalla
-                                                        $mostrar_deserializado = unserialize($fila_3['nota_array']); //Debo deserializar el array antes que nada.
-        
-                                                        if(!isset($mostrar_deserializado[$x - 1])){ //Si no hago esta validación, y $mostrar_deserializado[$x - 1] no existe, me va a tirar un error re feo en la página.
-
-                                                            echo'<h6 style="color:red">Sin entregar</h6>';
-
-                                                        }else{ 
-                                                            
-                                                            $nota = $mostrar_deserializado[$x-1]; // Acceder al elemento en el índice $x-1. Así, imprimo un elemento del array en cada columna de notas.
-
-                                                            echo '<span style="color:'; //Depende del valor de la variable $nota el color que tenga.
-
-                                                            if($nota >= 7){
-
-                                                                echo 'green';
-
-                                                            }else if($nota >=4 && $nota <7){
-
-                                                                echo 'yellow';
-
-                                                                
-                                                            }else{
-
-                                                                echo 'red';
-
-                                                            }                         
-
-                                                            echo '">' .$nota. '</span>';
+                                                        if ($fila_3['nota_array'] == NULL){
+                                                            // Si está vacío, no hay notas para imprimir
+                                                            echo "No hay notas para imprimir.";
             
-                                                        }
+                                                        }else{
+                                                            // Si el campo nota_array tiene valores, obtenerlos y mostrarlos en pantalla
+                                                            $mostrar_deserializado = unserialize($fila_3['nota_array']); //Debo deserializar el array antes que nada.
+            
+                                                            if(!isset($mostrar_deserializado[$x - 1])){ //Si no hago esta validación, y $mostrar_deserializado[$x - 1] no existe, me va a tirar un error re feo en la página.
 
-                                                        
-        
-                                                    }
+                                                                echo'<h6 style="color:red">Sin entregar</h6>';
+
+                                                            }else{ 
+                                                                
+                                                                $nota = $mostrar_deserializado[$x-1]; // Acceder al elemento en el índice $x-1. Así, imprimo un elemento del array en cada columna de notas.
+
+                                                                echo '<span style="color:'; //Depende del valor de la variable $nota el color que tenga.
+
+                                                                if($nota >= 7){
+
+                                                                    echo 'green';
+
+                                                                }else if($nota >=4 && $nota <7){
+
+                                                                    echo 'yellow';
+
+                                                                    
+                                                                }else{
+
+                                                                    echo 'red';
+
+                                                                }                         
+
+                                                                echo '">' .$nota. '</span>';
+                
+                                                            }
+
+                                                        }
                                                     
-                                                }
+                                                    }
     
                                             }//while
     
@@ -385,6 +456,23 @@
         </table>
 
     </div>
+
+    <script>
+
+
+        $(document).ready(function(){//Sobre este documento, este archivo, cuando esté listo realizá las siguientes funciones o actividades:
+
+            ////////////////Cambiemos las alertas para que desaparezcan después de unos segundos:
+            $('.alert button').hide();
+
+            setInterval(function(){
+                $('.alert').hide("slow");
+            }, 3000); //Oculta las alertas luego de que pasen 3000 milisegundos (3 segundos).
+
+        })
+
+    </script>
+
 
 </body>
 

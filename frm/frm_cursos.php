@@ -52,10 +52,6 @@
         include "../alertas.php";
         include "../conexion.php";
 
-        $sql = "SELECT * FROM cursos WHERE docente_id = ".$docente_id; //Traeme todos los datos de todos los campos de la tabla cursos en donde el campo docente_id tenga el mismo valor que la variable $docente_id. Así, me aseguro de traerme los datos que le corresponden a ESE docente.
-        $res = mysqli_query($link, $sql);
-        $mostrar = mysqli_fetch_array($res);
-
     ?>
 
     <div class="conteiner text-center">
@@ -226,7 +222,7 @@
 
             <?php
 
-                while ($fila = mysqli_fetch_array($res)){ //Mientras que existan datos en $res, me los va a traer.
+                while ($fila = mysqli_fetch_array($res_curso2)){ //Mientras que existan datos en $res, me los va a traer.
 
             ?>
                     <tr>
@@ -243,7 +239,7 @@
                         <td>
 
                             <!--  --------------MODAL ELIMINAR----------    -->
-                            <div class="modal" tabindex="-1" id="modal_eliminar<?php echo $mostrar["curso"]; ?>">
+                            <div class="modal" tabindex="-1" id="modal_eliminar<?php echo $fila["curso"]; ?>">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                 <div class="modal-header bg-danger">
@@ -253,12 +249,12 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <p>¿Está seguro de eliminar el curso <?php echo $mostrar["curso"]?>?</p>
+                                                    <p>¿Está seguro de eliminar el curso <?php echo $fila["curso"]?>?</p>
                                                     <p>Esta accion no se puede revertir.</p>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                                    <a href="../acc/acc_borrar_curso.php?docente_id=<?php echo $mostrar["docente_id"] ?>&curso=<?php echo $mostrar["curso"]; ?>" class="btn btn-danger">Eliminar partida</a>
+                                                    <a href="../acc/acc_borrar_curso.php?docente_id=<?php echo $fila["docente_id"] ?>&curso=<?php echo $fila["curso"]; ?>" class="btn btn-danger">Eliminar partida</a>
                                                     <!-- Si aprieto "Eliminar Partida", el botón, que es un vínculo con forma de botón, me reedirige a acc_borrar_cursos.php. -->
                                                 </div>
                                             </div>
@@ -266,10 +262,10 @@
                             </div>
                                         
                                 
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_eliminar<?php echo $mostrar["curso"]; ?>"><i class="bi bi-x-octagon-fill"></i></button>  
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_eliminar<?php echo $fila["curso"]; ?>"><i class="bi bi-x-octagon-fill"></i></button>  
                                         <!-- El modal y el ícono de la cruz lo saco de Boostrap. 
                                         Al hacer click sobre el botón abre el modal cuyo target es el id (#) modal_eliminarnombrecurso. Acordate que el # indica que es un id. Entonces, cuando clickeo el botón abre el elemento que tenga ese id.
-                                                Me llevo la variable $mostrar["curso"] a acc_borrar_curso.php vía URL (GET) para que el sistema sepa qué dato, que curso, borrar.
+                                                Me llevo la variable $fila["curso"] a acc_borrar_curso.php vía URL (GET) para que el sistema sepa qué dato, que curso, borrar.
                                             Obviamente, también mellevo a la variable docente_id para que sepa de qué docente es el curso.
                                             -->
 
@@ -291,7 +287,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                        <a href="frm_editar_curso.php?docente_id=<?php echo $mostrar["docente_id"] ?>&curso=<?php echo $fila["curso"]; ?>" class="btn btn-primary"> Editar curso</a> <?php //Me llevo el curso y el docente_id para que el programa sepa qué datos editarme ?>
+                                        <a href="frm_editar_curso.php?docente_id=<?php echo $fila["docente_id"] ?>&curso=<?php echo $fila["curso"]; ?>" class="btn btn-primary"> Editar curso</a> <?php //Me llevo el curso y el docente_id para que el programa sepa qué datos editarme ?>
                                     </div>
                                     </div>
                                 </div>
