@@ -1,6 +1,7 @@
 <?php
 
     include "../conexion.php";
+    include "../functions.php";
 
     SESSION_START();
 
@@ -9,8 +10,7 @@
     $curso_id = $_GET["curso_id"];
     $fila = $_POST["fila"];
 
-    $sql = "DELETE FROM alumnos WHERE curso = '".$curso."' AND curso_id = ".$curso_id." AND numero = ".$fila." AND docente_id = ".$docente_id.""; //Borrame todos los datos de todos los campos de la tabla docentes en donde el campo docente_id sea igual a la variable docente_id. Esta aclaración la hago para que el programa me borre al docente que yo quiero.
-    $res = mysqli_query($link, $sql);
+    $res = borrarDatosAlumno($curso, $curso_id, $fila, $docente_id); //La función borrarDatosAlumno() está definida en el archivo functions.php
 
     if($res){
 

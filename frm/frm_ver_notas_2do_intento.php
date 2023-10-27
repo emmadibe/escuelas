@@ -124,7 +124,7 @@
 
                                                         <form method="POST" action="../acc/acc_eliminar_alumno.php?curso=<?php echo $curso ?>&curso_id=<?php echo $curso_id?>">
                                                             <label for="fila"></label>
-                                                            <input type="text" name="fila" class="form-control" placeholder="Ingresa tu nombre">                                                        
+                                                            <input type="text" name="fila" class="form-control" placeholder="6">                                                        
                                                     
                                                             <p>Esta accion no se puede revertir.</p>
                                                         
