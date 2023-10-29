@@ -1,70 +1,13 @@
 <?php
+// Establecer las cabeceras para la descarga
+header('Content-Type: application/vnd.ms-excel');
+header('Content-Disposition: attachment; filename="tabla.xls"');
 
-    session_start();
-
-?>
-
-<!DOCTYPE html>
-<html lang="es">
-
-<?php
-    
-    include "../alertas.php";
-    include "../conexion.php";
-    include "../barra.php";
-    
-    $docente_id = $_SESSION["docente_id"];
-    $curso = $_GET["curso"];
-
+// Generar el contenido de la tabla
+$tabla = 
 
 ?>
-
-<head>
-
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Boostrap, librería de CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-    <!-- Boostrap, extensión de paletas de colores. Es para tener, entre otros, el color morado -->
-    <link rel="stylesheet" href="path/to/bootstrap-extended-colors.css">
-
-    <!-- Boostrap, librería de JS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-
-    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script> 
-    <!-- Librería para descargar la tabla en formato excel utilizando JS. -->
-
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
-        <!-- Decargué la versión minificada de la librería de JS en jQuery CDN. -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
-        <!-- Los links de arriba los tengo que copiar para que los modales y la barra desplegable me funcionen!! -->
-
-
-    <title>Notas de los cursos</title>
-
-    <style>
-
-        body{
-
-            background: <?php echo $mostrar_curso["color_fondo"] ?>
-
-        }
-
-    </style>
-
-</head>
-
-<!--/////////////////////FUNCIONES:  -->
-
-
-
-<!-- ///////////////////////////////////// -->
-
-<body>
-
-    <div class="conteiner text-center">
+'<div class="conteiner text-center">
         
         <div class="row">
            <?php include "../conexion.php"; ?>
@@ -72,8 +15,7 @@
             <!-- Con el atributo bg- modifico el color del fondo; con text, el del texto. Todo usando Boostrap. -->
         </div>
 
-        <table class="table table-bordered" id="miTabla">
-            <!-- Se crea un id a la tabla para que la función exportarTabla de JS sepa qué tabla me debe descargar en formato excel -->
+        <table class="table table-bordered" id="tabla">
 
             <thead>
 
@@ -147,6 +89,12 @@
                                     <!-- /////////////////////////////////// -->
 
                     </div>
+
+                </div>
+
+                <div class="col">
+
+                    <a href="../acc/acc_descargartabla.php">Descargartabla</a>
 
                 </div>
 
@@ -451,50 +399,11 @@
                     ?>
 
                 </tr>     
-                
-              
-                
+            
             </tbody>
 
-        </table>
 
-    </div>
-
-    <div class="col">
-
-        <button onclick="exportarTabla()">Exportar a Excel</button>
-        <!-- Esta línea crea un botón con el texto "Exportar a Excel". Cuando se hace clic en el botón, se ejecutará la función exportarTabla()que se define abajo. -->
-
-    </div>
-
-    <script>
-
-
-        $(document).ready(function(){//Sobre este documento, este archivo, cuando esté listo realizá las siguientes funciones o actividades:
-
-            ////////////////Cambiemos las alertas para que desaparezcan después de unos segundos:
-            $('.alert button').hide();
-
-            setInterval(function(){
-                $('.alert').hide("slow");
-            }, 3000); //Oculta las alertas luego de que pasen 3000 milisegundos (3 segundos).
-
-        })
-
-        function exportarTabla() { //Esta función entrará en acción cuando se haga click en el boton que dice onclick="exportarTabla".
-      // Obtener la tabla HTML
-            var tabla = document.getElementById('miTabla'); //Esta línea obtiene la referencia al elemento de la tabla HTML con el ID "miTabla" utilizando el método getElementById(). La referencia se almacena en la variable tabla.
-
-            // Crear un libro de Excel
-            var libro = XLSX.utils.table_to_book(tabla); //Esta línea utiliza la función table_to_book()de la biblioteca SheetJS para convertir la tabla HTML en un libro de Excel. El libro resultante se almacena en la variable libro.
-
-            // Guardar el libro como archivo de Excel
-            XLSX.writeFile(libro, 'notas_<?php echo $curso ?>_<?php echo $mostrar_curso["colegio"] ?>.xlsx'); // Esta línea utiliza la función writeFile()de la biblioteca SheetJS para guardar el libro como un archivo de Excel con el nombre "notas_NOMBRECURSO_colegio". El archivo se descargará en el navegador del usuario cuando se ejecute esta línea.
-        }
-
-    </script>
-
-
-</body>
-
-</html>
+            </table>';
+// Imprimir el contenido de la tabla
+<?php echo $tabla;
+?>

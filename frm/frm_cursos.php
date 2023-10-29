@@ -208,6 +208,7 @@
         <thead>
 
             <tr>
+            <th scope="col">ID del curso</th>
             <th scope="col">Nombre del curso</th>
             <th scope="col">Escuela</th>
             <th scope="col">Cantidad de alumnos</th>
@@ -222,11 +223,12 @@
 
             <?php
 
-                while ($fila = mysqli_fetch_array($res_curso2)){ //Mientras que existan datos en $res, me los va a traer.
+                while ($fila = mysqli_fetch_array($res_curso2)){ //Mientras que existan datos en $res ($res == True), me los va a traer.
 
             ?>
                     <tr>
 
+                        <th scope="row"> <?php echo $fila["curso_id"] ?> </th>
                         <th scope="row"> <?php echo $fila["curso"] ?> </th>
                         <td> <?php echo $fila["colegio"] ?> </td>
                         <td> <?php echo $fila["cant_alumnos"] ?> </td>
@@ -311,8 +313,6 @@
 
     </div> <?php //conteiner ?> 
 
-
- 
 </body>
 
 </html>
