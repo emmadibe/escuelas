@@ -76,6 +76,14 @@
 
                     <div class="form-group">
 
+                        <label for="email"><h2 style="color:purple">Email</h2></label>
+                        <br>
+                        <input type="email" required name="email" placeholder="EJ: usuario@gmail.com">
+                    
+                    </div>
+
+                    <div class="form-group">
+
                         <label for="pass"><h2 style="color:purple">Contraseña</h2></label>
                         <br>
                         <input type="password" required name="pass" placeholder="EJ: Pepe" oninput="checkPasswordLength(this)" >

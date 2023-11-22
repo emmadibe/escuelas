@@ -79,7 +79,7 @@
 
                 <div class = "row">
 
-                    <div class = "col-6">
+                    <div class = "col-4">
 
                             <!-- MODAL EDITAR -->
                             <div class="modal fade" id="modal_editar_alumno" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -103,12 +103,12 @@
                             </div>
                             <!-- FIN DE MODAL EDITAR -->
                             <!-- Botón que me abrirá el modal editar: -->
-                             <button type="button" class="btn btn-warning boton_editar_curso"  id=""data-toggle="modal" data-target="#modal_editar_alumno"><i class="bi bi-pen"></i></button> 
+                             <button type="button" class="btn btn-warning boton_editar_curso"  id=""data-toggle="modal" data-target="#modal_editar_alumno"><i class="bi bi-pen">Editar alumnos</i></button> 
 
 
                     </div>
                     
-                    <div class = "col-6">
+                    <div class = "col-4">
 
                           <!-- -------------------------------------MODAL ELIMINAR------------------------------------------------ -->
 
@@ -145,6 +145,37 @@
                                           <!-- Botón que abrirá el Modal de eliminar -->
                                           <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_eliminar_alumno" data-whatever="@mdo">Eliminar un alumno</button>
                                     <!-- /////////////////////////////////// -->
+
+                    </div>
+
+                  <!-- MODAL PARA CAMBIAR LA CANTIDAD DE NOTAS -->
+
+                    <div class = "col-4">
+
+                            <!-- MODAL PARA CAMBIAR LA CANTIDAD DE NOTAS -->
+                            <div class="modal fade" id="modal_cambiar_cant_notas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content bg-primary"> <?php //Aquí edito el color de fondo del cuerpo del modal ?>
+                                    <div class="modal-header bg-warning"> <?php //Como su nombre lo indica (header = cabeza), aquí eduçito el color de fondo de la cabecera del modal ?>
+                                        <h5 class="modal-title" id="exampleModalLabel" style="color:green">Hola, <?php echo $_SESSION["nombre"]; ?></h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h6 style="color:pink">¿Desea cambiar la cantidad de notas?</h6>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                        <a href="frm_cambiar_cant_notas.php?curso_id=<?php echo $mostrar_curso2["curso_id"] ?>&curso=<?php echo $mostrar_curso2["curso"]?>" class="btn btn-primary"> Cambiar la cantidad de notas</a> <?php //Me llevo el curso y el docente_id para que el programa sepa qué datos editarme ?>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- FIN DE MODAL PARA CAMBIAR LA CANTIDAD DE NOTAS -->
+                            <!-- Botón que me abrirá el modal para cambiar la cantidad de notas: -->
+                             <button type="button" class="btn btn-warning boton_editar_curso"  id=""data-toggle="modal" data-target="#modal_cambiar_cant_notas"><i class="bi bi-pen">Cambiar la cantidad de notas</i></button> 
+
 
                     </div>
 
@@ -395,7 +426,7 @@
                                 ?>
                             </td>
 
-                            <td style="color : red; background: black">   <?php //En esta columa imprimiré la nota conceptual: TTEA; TEP o TED. ?>
+                            <td style="color : red; background: black">   <?php //En esta columa imprimiré la nota conceptual: TEA; TEP o TED. ?>
                                 
                                     <?php
 
@@ -462,7 +493,7 @@
 
     <div class="col">
 
-        <button onclick="exportarTabla()">Exportar a Excel</button>
+        <button onclick="exportarTabla()" style="color:green"><i class="bi bi-filetype-xls"> Descargar Excel</i></button>
         <!-- Esta línea crea un botón con el texto "Exportar a Excel". Cuando se hace clic en el botón, se ejecutará la función exportarTabla()que se define abajo. -->
 
     </div>

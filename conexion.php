@@ -1,15 +1,24 @@
 <?php
-     $link=mysqli_connect("localhost", "root", ""); //Me conecto al servidor de mi base de datos.
+     $link=mysqli_connect("localhost", "root", ""); //Me conecto al servidor de mi base de datos. "localhost", es el nombre del servidor de la base de datos; "root", es el nombre de usuario predeterminado para el servidor de la base de datos MySQL; "", es la contraseña para acceder al servidor de la  base de datos (por defecto, viene sin contraseña)
      mysqli_select_db($link, "escuelas_db"); //Me conecto a mi base de datos que es escuelas_db
 
           if(isset($curso) AND isset($docente_id) ){ 
      ///////////Consulta para traerme todos los campos de la tabla alumnos en donde curso sea igual a $curso y el docente_id igual a $docente_id. Así, me traigo los campos de los alumnos del curso con el que trabajo y de ESE docente.
     //Si no hago el isset, y las variables no existen, me tira un error horrible.
-               $sql_notas = "SELECT * FROM alumnos WHERE curso ='".$curso."' AND docente_id = ".$docente_id;
+
+
+
+               $sql_notas = "SELECT * FROM alumnos 
+               WHERE curso = ? AND docente_id = ? 
+               ORDER BY promedio DESC";
+
+               $stmt = mysqli_prepare($link, $sql_notas);
+               mysqli_stmt_bind_param($stmt, "si", $curso, $docente_id);
+               mysqli_stmt_execute($stmt);
+
+               // Fetch the results
+               $res_notas = mysqli_stmt_get_result($stmt);
           //Me traigo todos los campos de la tabla alumnos en donde el campo curso sea igual a la variable curso. Eso es para traerme los datos de los alumnos del curso que me interesa. 
-               $res_notas = mysqli_query($link, $sql_notas);
-               $mostrar_notas = mysqli_fetch_array($res_notas);
-               $notas = $mostrar_notas["nota_array"];
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////     
           
 //////////////////////////////////////Consulta para traerme todos los campos de la tabla cursos en donde curso sea igual a $curso y docente_id igual a $docente_id

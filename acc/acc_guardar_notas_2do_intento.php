@@ -45,6 +45,8 @@
             $nota=$_POST["nota"];
             $curso_id=$_GET["curso_id"]; //Es necesario el curso_id para que en pantalla luego se impriman las notas que corresponden a ESA fila y a ESE curso_id. Sino, se pueden imprimir en pantalla todas las notas que correspondan a ESA fila, pero a cualquier curso.
 
+            SESSION_START();
+
             //Me conecto a mi base de datos:
             include "../conexion.php";
 
@@ -64,11 +66,31 @@
                                                 WHERE numero=".$fila." && curso_id=".$curso_id."" ; //Ahora sí, actualizo (UPDATE) mi tabla alumnos guardando el valor de mi array serializado $Notas_envio en el campo nota_array.
                     $res_act = mysqli_query($link, $sql_act);
 
-                    header("location:../frm/frm_ver_notas_2do_intento.php?curso=$curso&numero=$fila&curso_id=$curso_id");
-                    
+//////////////////////////////////////////////////////////////////// GUARDAR PROMEDIO ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    $sql_1 = "SELECT * FROM alumnos 
+                    WHERE curso = '".$curso."' AND docente_id = ".$_SESSION['docente_id'];
+                    $res_1 = mysqli_query($link, $sql_1);
+                    $mostrar_1 = mysqli_fetch_array($res_1);
+                    //////////Primero serializar los valores del array antes de trabajar con ellos:
+                    $nota_array = unserialize($mostrar_1['nota_array']);
+                    //Ahora, debo sumar los valores almacenados en el array $nota_array. Para ello, utilizaré el bucle foreach. En cada ciclo, la variable $valor almacenará un elemento del array $nota_array y se sumará  a la variable $suma.- 
+                    $suma = 0;
+                    foreach ($nota_array as $valor){
 
-                     
+                        $suma += $valor;
+
+                    }
+                    //Ahora, debo calcular la longitud del array. Para ello, utilizo la función count(), la cual me retorna un int que indica la longitud del array que le paso como parámetro. 
+                    $longitud = count($nota_array);
+                    //Calculo el promedio: 
+                    $promedio = $suma / $longitud;
+                    //Guardo el valor de la variable promedio en la columna promedio de la tabla alumnos de la base de datos escuela_db:
+                    $sql_promedio = "UPDATE alumnos SET promedio = '".$promedio."' WHERE numero = ".$fila." && curso_id = ".$curso_id;
+                    $res_promedio = mysqli_query($link, $sql_promedio);
                     
+/////////////////////////////////////////////////////////////////// FIN DE CALCULAR Y GUARDAR PROMEDIO //////////////////////////////////////////////////////////////////////////////////////////
+                    header("location:../frm/frm_ver_notas_2do_intento.php?curso=$curso&numero=$fila&curso_id=$curso_id");
+                                      
             }else{ //En cambio, si el campo nota_array ya tenía un valor lo que debo hacer es seguir agregándole valores.
 
                     $mostrar_deserial = unserialize($mostrar_traer['nota_array']); //Primero, me traigo los datos almacenados en un array y guardados en el campo 'nota_array' de la tabla alumnos. Esos datos debo deserializarlos con la función unserialize. Debo deserializarlos sí o sí para poder seguir agregándole valores al array. 
@@ -85,6 +107,31 @@
                     $sql_act = "UPDATE alumnos SET nota_array='".$Notas_agregadas_serializadas."'
                                                     WHERE numero=".$fila." && curso_id=".$curso_id.""; //Ahora sí: actualizo mi field nota_array.
                     $res_act = mysqli_query($link, $sql_act);
+
+//////////////////////////////////////////////////////////////////// GUARDAR PROMEDIO ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                    $sql_1 = "SELECT * FROM alumnos 
+                                        WHERE curso = '".$curso."' AND docente_id = ".$_SESSION['docente_id'];
+                    $res_1 = mysqli_query($link, $sql_1);
+                    $mostrar_1 = mysqli_fetch_array($res_1);
+                    //////////Primero serializar los valores del array antes de trabajar con ellos:
+                    $nota_array = unserialize($mostrar_1['nota_array']);
+                    //Ahora, debo sumar los valores almacenados en el array $nota_array. Para ello, utilizaré el bucle foreach. En cada ciclo, la variable $valor almacenará un elemento del array $nota_array y se sumará  a la variable $suma.- 
+                    $suma = 0;
+                    foreach ($nota_array as $valor){
+
+                        $suma += $valor;
+
+                    }
+                    //Ahora, debo calcular la longitud del array. Para ello, utilizo la función count(), la cual me retorna un int que indica la longitud del array que le paso como parámetro. 
+                    $longitud = count($nota_array);
+                    //Calculo el promedio: 
+                    $promedio = $suma / $longitud;
+                    //Guardo el valor de la variable promedio en la columna promedio de la tabla alumnos de la base de datos escuela_db:
+                    $sql_promedio = "UPDATE alumnos SET promedio = '".$promedio."' WHERE numero = ".$fila." && curso_id = ".$curso_id;
+                    $res_promedio = mysqli_query($link, $sql_promedio);
+
+///////////////////////////////////////////////////////////////////FIN DE CALCULAR Y GUARDAR PROMEDIO //////////////////////////////////////////////////////////////////////////////////////////
 
                     if($res_act){
 
